@@ -1,20 +1,20 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers;
 
 import com.dunnas.chamados_condominio.application.usecases.CreateUser;
+import com.dunnas.chamados_condominio.application.usecases.FindUserByEmail;
 import com.dunnas.chamados_condominio.domain.entity.User;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
     private final CreateUser createUser;
+    private final FindUserByEmail findUserByEmail;
     private final UserDTOMapper userDTOMapper;
 
-    public UserController(CreateUser createUser, UserDTOMapper userDTOMapper) {
+    public UserController(CreateUser createUser, FindUserByEmail findUserByEmail, UserDTOMapper userDTOMapper) {
         this.createUser = createUser;
+        this.findUserByEmail = findUserByEmail;
         this.userDTOMapper = userDTOMapper;
     }
 
@@ -23,6 +23,12 @@ public class UserController {
         User newUser = userDTOMapper.toEntity(request);
         User createdUser = createUser.createUser(newUser);
         return userDTOMapper.toResponse(createdUser);
+    }
+
+    @GetMapping
+    public CreateUserResponse findUserByEmail(@RequestParam String email) {
+        User foundUser = findUserByEmail.findUserByEmail(email);
+        return userDTOMapper.toResponse(foundUser);
     }
 
 }

@@ -21,4 +21,13 @@ public class UserRepositoryGateway implements UserGateway {
         UserEntity savedUser = repository.save(userEntity);
         return mapper.toDomainObj(savedUser);
     }
+
+    @Override
+    public User findUserByEmail(String email) {
+        UserEntity foundUser = repository.findByEmail(email);
+        if (foundUser == null) {
+            throw new RuntimeException("User not found");
+        }
+        return mapper.toDomainObj(foundUser);
+    }
 }
