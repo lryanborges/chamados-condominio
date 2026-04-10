@@ -5,4 +5,5 @@ import com.dunnas.chamados_condominio.domain.entity.User;
 public interface UserGateway {
     User createUser(User user);
     User findUserByEmail(String email);
+    User findUserById(Long id);
 }
