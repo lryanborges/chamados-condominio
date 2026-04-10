@@ -5,6 +5,8 @@ import com.dunnas.chamados_condominio.domain.entity.User;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserRepository;
 
+import java.util.List;
+
 public class UserRepositoryGateway implements UserGateway {
 
     private final UserRepository repository;
@@ -36,5 +38,11 @@ public class UserRepositoryGateway implements UserGateway {
         UserEntity foundUser = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return mapper.toDomainObj(foundUser);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        List<UserEntity> foundUsers = repository.findAll();
+        return mapper.toDomainObjList(foundUsers);
     }
 }

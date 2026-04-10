@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.application.usecases.CreateUser;
+import com.dunnas.chamados_condominio.application.usecases.FindAllUsers;
 import com.dunnas.chamados_condominio.application.usecases.FindUserByEmail;
 import com.dunnas.chamados_condominio.application.usecases.FindUserById;
 import com.dunnas.chamados_condominio.infrastructure.controllers.UserDTOMapper;
@@ -28,6 +29,11 @@ public class UserConfig {
     @Bean
     FindUserById findUserById(UserGateway userGateway) {
         return new FindUserById(userGateway);
+    }
+
+    @Bean
+    FindAllUsers findAllUsers(UserGateway userGateway) {
+        return new FindAllUsers(userGateway);
     }
 
     @Bean
