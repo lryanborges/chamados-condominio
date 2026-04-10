@@ -30,4 +30,11 @@ public class UserRepositoryGateway implements UserGateway {
         }
         return mapper.toDomainObj(foundUser);
     }
+
+    @Override
+    public User findUserById(Long id) {
+        UserEntity foundUser = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapper.toDomainObj(foundUser);
+    }
 }
