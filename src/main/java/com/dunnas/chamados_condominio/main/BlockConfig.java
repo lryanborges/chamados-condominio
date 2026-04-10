@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.BlockGateway;
 import com.dunnas.chamados_condominio.application.usecases.CreateBlock;
+import com.dunnas.chamados_condominio.application.usecases.CreateUnit;
 import com.dunnas.chamados_condominio.infrastructure.controllers.BlockDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.BlockEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.BlockRepositoryGateway;
@@ -13,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class BlockConfig {
 
     @Bean
-    CreateBlock createBlock(BlockGateway blockGateway) {
-        return new CreateBlock(blockGateway);
+    CreateBlock createBlock(BlockGateway blockGateway, CreateUnit createUnit) {
+        return new CreateBlock(blockGateway, createUnit);
     }
 
     @Bean
