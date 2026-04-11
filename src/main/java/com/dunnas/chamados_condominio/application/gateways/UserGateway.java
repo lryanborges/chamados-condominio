@@ -9,4 +9,5 @@ public interface UserGateway {
     User findUserByEmail(String email);
     User findUserById(Long id);
     List<User> findAllUsers();
+    User updateUser(User user);
 }

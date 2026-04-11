@@ -8,11 +8,15 @@ import java.util.List;
 
 public class UserEntityMapper {
     UserEntity toEntity(User userDomainObj) {
-        return new UserEntity(userDomainObj.getName(), userDomainObj.getEmail(), userDomainObj.getPassword(), userDomainObj.getRole(), userDomainObj.getScope());
+        UserEntity entity = new UserEntity(userDomainObj.getName(), userDomainObj.getEmail(), userDomainObj.getPassword(), userDomainObj.getRole(), userDomainObj.getScope());
+        entity.setId(userDomainObj.getId());
+        return entity;
     }
 
     User toDomainObj(UserEntity userEntity) {
-        return new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getRole(), userEntity.getScope());
+        User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getRole(), userEntity.getScope());
+        user.setId(userEntity.getId());
+        return user;
     }
 
     List<User> toDomainObjList(List<UserEntity> userEntityList) {
