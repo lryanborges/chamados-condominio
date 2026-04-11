@@ -45,4 +45,11 @@ public class UserRepositoryGateway implements UserGateway {
         List<UserEntity> foundUsers = repository.findAll();
         return mapper.toDomainObjList(foundUsers);
     }
+
+    @Override
+    public User updateUser(User user) {
+        UserEntity userEntity = mapper.toEntity(user);
+        UserEntity savedUser = repository.save(userEntity);
+        return mapper.toDomainObj(savedUser);
+    }
 }
