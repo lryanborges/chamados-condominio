@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.application.gateways;
 
+import com.dunnas.chamados_condominio.domain.entity.Unit;
 import com.dunnas.chamados_condominio.domain.entity.User;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface UserGateway {
     List<User> findAllUsers();
     User updateUser(User user);
     void deleteUser(Long id);
+    void linkUserToUnit(Long userId, Unit unit);
 }

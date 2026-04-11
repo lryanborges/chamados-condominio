@@ -1,10 +1,12 @@
 package com.dunnas.chamados_condominio.main;
 
+import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.application.usecases.*;
 import com.dunnas.chamados_condominio.infrastructure.controllers.UserDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.UserEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.UserRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.persistence.UnitRepository;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,8 +46,13 @@ public class UserConfig {
     }
 
     @Bean
-    UserGateway userGateway(UserRepository userRepository, UserEntityMapper userEntityMapper) {
-        return new UserRepositoryGateway(userRepository, userEntityMapper);
+    LinkUserToUnit linkUserToUnit(UserGateway userGateway, UnitGateway unitGateway) {
+        return new LinkUserToUnit(userGateway, unitGateway);
+    }
+
+    @Bean
+    UserGateway userGateway(UserRepository userRepository, UserEntityMapper userEntityMapper, UnitRepository unitRepository) {
+        return new UserRepositoryGateway(userRepository, userEntityMapper, unitRepository);
     }
 
     @Bean

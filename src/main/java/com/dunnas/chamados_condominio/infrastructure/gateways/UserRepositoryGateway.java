@@ -1,7 +1,10 @@
 package com.dunnas.chamados_condominio.infrastructure.gateways;
 
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
+import com.dunnas.chamados_condominio.domain.entity.Unit;
 import com.dunnas.chamados_condominio.domain.entity.User;
+import com.dunnas.chamados_condominio.infrastructure.persistence.UnitEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.UnitRepository;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserRepository;
 
@@ -12,10 +15,12 @@ public class UserRepositoryGateway implements UserGateway {
 
     private final UserRepository repository;
     private final UserEntityMapper mapper;
+    private final UnitRepository unitRepository;
 
-    public UserRepositoryGateway(UserRepository repository, UserEntityMapper mapper) {
+    public UserRepositoryGateway(UserRepository repository, UserEntityMapper mapper, UnitRepository unitRepository) {
         this.repository = repository;
         this.mapper = mapper;
+        this.unitRepository = unitRepository;
     }
 
     @Override
@@ -60,5 +65,16 @@ public class UserRepositoryGateway implements UserGateway {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setDeletedAt(LocalDateTime.now());
         repository.save(user);
+    }
+
+    @Override
+    public void linkUserToUnit(Long userId, Unit unit) {
+        UserEntity userEntity = repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        UnitEntity unitEntity = unitRepository.findById(unit.getId())
+                .orElseThrow(() -> new RuntimeException("Unit not found"));
+
+        userEntity.getUnits().add(unitEntity);
+        repository.save(userEntity);
     }
 }

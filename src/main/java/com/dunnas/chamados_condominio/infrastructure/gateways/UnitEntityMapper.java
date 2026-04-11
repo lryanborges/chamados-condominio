@@ -5,10 +5,14 @@ import com.dunnas.chamados_condominio.infrastructure.persistence.UnitEntity;
 
 public class UnitEntityMapper {
     UnitEntity toEntity(Unit unitDomainObj) {
-        return new UnitEntity(unitDomainObj.getBlockId(), unitDomainObj.getFloor(), unitDomainObj.getIdentifier());
+        UnitEntity unitEntity = new UnitEntity(unitDomainObj.getBlockId(), unitDomainObj.getFloor(), unitDomainObj.getIdentifier());
+        unitEntity.setId(unitDomainObj.getId());
+        return unitEntity;
     }
 
     Unit toDomainObj(UnitEntity unitEntity) {
-        return new Unit(unitEntity.getBlockId(), unitEntity.getFloor(), unitEntity.getIdentifier());
+        Unit unit = new Unit(unitEntity.getBlockId(), unitEntity.getFloor(), unitEntity.getIdentifier());
+        unit.setId(unitEntity.getId());
+        return unit;
     }
 }
