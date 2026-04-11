@@ -5,6 +5,7 @@ import com.dunnas.chamados_condominio.domain.entity.User;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserRepositoryGateway implements UserGateway {
@@ -51,5 +52,13 @@ public class UserRepositoryGateway implements UserGateway {
         UserEntity userEntity = mapper.toEntity(user);
         UserEntity savedUser = repository.save(userEntity);
         return mapper.toDomainObj(savedUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        UserEntity user = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setDeletedAt(LocalDateTime.now());
+        repository.save(user);
     }
 }

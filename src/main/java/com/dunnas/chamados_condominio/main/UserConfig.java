@@ -39,6 +39,11 @@ public class UserConfig {
     }
 
     @Bean
+    DeleteUser deleteUser(UserGateway userGateway) {
+        return new DeleteUser(userGateway);
+    }
+
+    @Bean
     UserGateway userGateway(UserRepository userRepository, UserEntityMapper userEntityMapper) {
         return new UserRepositoryGateway(userRepository, userEntityMapper);
     }

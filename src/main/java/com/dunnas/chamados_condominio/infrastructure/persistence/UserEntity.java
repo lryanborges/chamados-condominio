@@ -2,12 +2,15 @@ package com.dunnas.chamados_condominio.infrastructure.persistence;
 
 import com.dunnas.chamados_condominio.domain.entity.Role;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "\"user\"")
+@SQLRestriction("deleted_at IS NULL")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +28,7 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "unit_id")
     )
     private List<UnitEntity> units = new ArrayList<>();
+    private LocalDateTime deletedAt;
 
     public UserEntity() {}
 
@@ -90,5 +94,13 @@ public class UserEntity {
 
     public void setUnitIds(List<UnitEntity> units) {
         this.units = units;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
     }
 }

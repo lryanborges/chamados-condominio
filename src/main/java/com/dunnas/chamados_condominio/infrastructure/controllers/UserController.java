@@ -16,14 +16,16 @@ public class UserController {
     private final FindUserById findUserById;
     private final FindAllUsers findAllUsers;
     private final UpdateUser updateUser;
+    private final DeleteUser deleteUser;
     private final UserDTOMapper userDTOMapper;
 
-    public UserController(CreateUser createUser, FindUserByEmail findUserByEmail, FindUserById findUserById, UserDTOMapper userDTOMapper, FindAllUsers findAllUsers, UpdateUser updateUser) {
+    public UserController(CreateUser createUser, FindUserByEmail findUserByEmail, FindUserById findUserById, UserDTOMapper userDTOMapper, FindAllUsers findAllUsers, UpdateUser updateUser, DeleteUser deleteUser) {
         this.createUser = createUser;
         this.findUserByEmail = findUserByEmail;
         this.findUserById = findUserById;
         this.findAllUsers = findAllUsers;
         this.updateUser = updateUser;
+        this.deleteUser = deleteUser;
         this.userDTOMapper = userDTOMapper;
     }
 
@@ -57,5 +59,10 @@ public class UserController {
         return userDTOMapper.toResponse(user);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        deleteUser.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
