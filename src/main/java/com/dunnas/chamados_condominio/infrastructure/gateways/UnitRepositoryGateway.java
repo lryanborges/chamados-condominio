@@ -21,4 +21,11 @@ public class UnitRepositoryGateway implements UnitGateway {
         UnitEntity savedUnit = repository.save(unitEntity);
         return new Unit(savedUnit.getBlockId(), savedUnit.getFloor(), savedUnit.getIdentifier());
     }
+
+    @Override
+    public Unit findUnitById(Long id) {
+        UnitEntity unitEntity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Unit not found"));
+        return mapper.toDomainObj(unitEntity);
+    }
 }
