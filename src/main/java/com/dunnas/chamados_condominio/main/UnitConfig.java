@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.usecases.CreateUnit;
+import com.dunnas.chamados_condominio.application.usecases.FindUnitById;
 import com.dunnas.chamados_condominio.infrastructure.gateways.UnitEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.UnitRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.UnitRepository;
@@ -14,6 +15,11 @@ public class UnitConfig {
     @Bean
     CreateUnit createUnit(UnitGateway unitGateway) {
         return new CreateUnit(unitGateway);
+    }
+
+    @Bean
+    FindUnitById findUnitById(UnitGateway unitGateway) {
+        return new FindUnitById(unitGateway);
     }
 
     @Bean
