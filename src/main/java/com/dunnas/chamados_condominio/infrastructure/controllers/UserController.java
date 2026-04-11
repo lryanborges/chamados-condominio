@@ -17,9 +17,10 @@ public class UserController {
     private final FindAllUsers findAllUsers;
     private final UpdateUser updateUser;
     private final DeleteUser deleteUser;
+    private final LinkUserToUnit linkUserToUnit;
     private final UserDTOMapper userDTOMapper;
 
-    public UserController(CreateUser createUser, FindUserByEmail findUserByEmail, FindUserById findUserById, UserDTOMapper userDTOMapper, FindAllUsers findAllUsers, UpdateUser updateUser, DeleteUser deleteUser) {
+    public UserController(CreateUser createUser, FindUserByEmail findUserByEmail, FindUserById findUserById, UserDTOMapper userDTOMapper, FindAllUsers findAllUsers, UpdateUser updateUser, DeleteUser deleteUser, LinkUserToUnit linkUserToUnit) {
         this.createUser = createUser;
         this.findUserByEmail = findUserByEmail;
         this.findUserById = findUserById;
@@ -27,6 +28,7 @@ public class UserController {
         this.updateUser = updateUser;
         this.deleteUser = deleteUser;
         this.userDTOMapper = userDTOMapper;
+        this.linkUserToUnit = linkUserToUnit;
     }
 
     @PostMapping
@@ -62,6 +64,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         deleteUser.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{userId}/units")
+    public ResponseEntity<Void> linkUnitToUser(@PathVariable Long userId, @RequestBody List<Long> unitIds) {
+        linkUserToUnit.link(userId, unitIds);
         return ResponseEntity.noContent().build();
     }
 
