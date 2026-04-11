@@ -10,4 +10,5 @@ public interface UserGateway {
     User findUserById(Long id);
     List<User> findAllUsers();
     User updateUser(User user);
+    void deleteUser(Long id);
 }
