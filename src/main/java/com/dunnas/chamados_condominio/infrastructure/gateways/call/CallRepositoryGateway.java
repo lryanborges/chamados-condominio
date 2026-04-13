@@ -23,4 +23,12 @@ public class CallRepositoryGateway implements CallGateway {
         CallEntity savedCall = repository.save(callEntity);
         return mapper.toDomainObj(savedCall);
     }
+
+    @Override
+    public List<Call> findAllCallByFilters(Long statusId, Long unitId, String callType) {
+        return repository.findAllByFilters(statusId, unitId, callType)
+                .stream()
+                .map(mapper::toDomainObj)
+                .toList();
+    }
 }
