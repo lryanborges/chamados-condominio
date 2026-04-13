@@ -2,55 +2,36 @@ package com.dunnas.chamados_condominio.application.usecases.call;
 
 import com.dunnas.chamados_condominio.application.gateways.AnnexGateway;
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
+import com.dunnas.chamados_condominio.application.gateways.FileStorageGateway;
 import com.dunnas.chamados_condominio.domain.entity.Annex;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public class CreateCall {
     private final CallGateway callGateway;
     private final AnnexGateway annexGateway;
+    private final FileStorageGateway fileStorageGateway;
 
-    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway) {
+    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway) {
         this.callGateway = callGateway;
         this.annexGateway = annexGateway;
+        this.fileStorageGateway = fileStorageGateway;
     }
 
-    public Call createCall(Call call) {
+    public Call createCall(Call call, List<MultipartFile> annexes) {
         call.setCreatedAt(LocalDateTime.now());
-/*
-        if (annexes != null) {
-            for (MultipartFile file : annexes) {
-                try {
-                    String fileName = file.getOriginalFilename();
+        Call createdCall = callGateway.createCall(call);
 
-                    String uniqueName = UUID.randomUUID() + "_" + fileName;
+        annexes.stream().forEach(file -> {
+            String filePath = fileStorageGateway.store(file);
 
-                    String filePath = "uploads/" + uniqueName;
+            Annex annex = new Annex(createdCall.getId(), file.getOriginalFilename(), filePath);
+            annexGateway.createAnnex(annex);
+        });
 
-                    Path path = Paths.get(filePath);
-                    Files.createDirectories(path.getParent());
-                    Files.write(path, file.getBytes());
-
-                    Annex annex = new Annex();
-                    annex.setFileName(fileName);
-                    annex.setFilePath(filePath);
-                    annex.setCallId(savedCall.getId());
-
-                    annexGateway.save(annex);
-
-                } catch (IOException e) {
-                    throw new RuntimeException("Erro ao salvar arquivo");
-                }
-            }
-        } */
-
-        return callGateway.createCall(call);
+        return createdCall;
     }
 }

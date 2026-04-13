@@ -4,6 +4,9 @@ import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallRepository;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public class CallRepositoryGateway implements CallGateway {
     private final CallRepository repository;
