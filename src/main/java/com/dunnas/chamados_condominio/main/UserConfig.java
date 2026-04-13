@@ -2,12 +2,12 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
-import com.dunnas.chamados_condominio.application.usecases.*;
-import com.dunnas.chamados_condominio.infrastructure.controllers.UserDTOMapper;
-import com.dunnas.chamados_condominio.infrastructure.gateways.UserEntityMapper;
-import com.dunnas.chamados_condominio.infrastructure.gateways.UserRepositoryGateway;
-import com.dunnas.chamados_condominio.infrastructure.persistence.UnitRepository;
-import com.dunnas.chamados_condominio.infrastructure.persistence.UserRepository;
+import com.dunnas.chamados_condominio.application.usecases.user.*;
+import com.dunnas.chamados_condominio.infrastructure.controllers.user.UserDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitRepository;
+import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;

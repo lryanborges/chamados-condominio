@@ -1,11 +1,11 @@
 package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
-import com.dunnas.chamados_condominio.application.usecases.CreateCallType;
-import com.dunnas.chamados_condominio.infrastructure.controllers.CallTypeDTOMapper;
-import com.dunnas.chamados_condominio.infrastructure.gateways.CallTypeEntityMapper;
-import com.dunnas.chamados_condominio.infrastructure.gateways.CallTypeRepositoryGateway;
-import com.dunnas.chamados_condominio.infrastructure.persistence.CallTypeRepository;
+import com.dunnas.chamados_condominio.application.usecases.calltype.CreateCallType;
+import com.dunnas.chamados_condominio.infrastructure.controllers.calltype.CallTypeDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.calltype.CallTypeEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.calltype.CallTypeRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.persistence.calltype.CallTypeRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

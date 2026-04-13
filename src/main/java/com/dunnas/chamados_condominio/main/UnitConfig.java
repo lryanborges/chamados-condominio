@@ -1,11 +1,11 @@
 package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
-import com.dunnas.chamados_condominio.application.usecases.CreateUnit;
-import com.dunnas.chamados_condominio.application.usecases.FindUnitById;
-import com.dunnas.chamados_condominio.infrastructure.gateways.UnitEntityMapper;
-import com.dunnas.chamados_condominio.infrastructure.gateways.UnitRepositoryGateway;
-import com.dunnas.chamados_condominio.infrastructure.persistence.UnitRepository;
+import com.dunnas.chamados_condominio.application.usecases.unit.CreateUnit;
+import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
+import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
