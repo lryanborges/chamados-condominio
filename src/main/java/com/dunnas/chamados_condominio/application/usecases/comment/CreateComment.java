@@ -60,6 +60,7 @@ public class CreateComment {
         }
 
         comment.setCreatedAt(LocalDateTime.now());
+        comment.setUserId(loggedUser.getId());
         return commentGateway.createComment(comment);
     }
 }
