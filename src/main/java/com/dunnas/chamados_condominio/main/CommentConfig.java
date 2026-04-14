@@ -1,6 +1,7 @@
 package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
+import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
 import com.dunnas.chamados_condominio.application.gateways.CommentGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
@@ -14,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CommentConfig {
     @Bean
-    CreateComment createComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway) {
-        return new CreateComment(commentGateway, callGateway, userGateway);
+    CreateComment createComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+        return new CreateComment(commentGateway, callGateway, userGateway, callTypeGateway);
     }
 
     @Bean
