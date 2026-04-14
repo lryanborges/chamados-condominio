@@ -3,7 +3,7 @@ package com.dunnas.chamados_condominio.main;
 import com.dunnas.chamados_condominio.application.gateways.BlockGateway;
 import com.dunnas.chamados_condominio.application.usecases.block.CreateBlock;
 import com.dunnas.chamados_condominio.application.usecases.unit.CreateUnit;
-import com.dunnas.chamados_condominio.infrastructure.controllers.block.BlockDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.block.BlockDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.block.BlockEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.block.BlockRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.block.BlockRepository;

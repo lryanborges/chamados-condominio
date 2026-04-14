@@ -5,7 +5,7 @@ import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
 import com.dunnas.chamados_condominio.application.gateways.CommentGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
-import com.dunnas.chamados_condominio.infrastructure.controllers.comment.CommentDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.comment.CommentEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.comment.CommentRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.comment.CommentRepository;

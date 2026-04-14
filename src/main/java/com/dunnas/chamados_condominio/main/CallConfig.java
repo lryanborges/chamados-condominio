@@ -5,7 +5,7 @@ import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
 import com.dunnas.chamados_condominio.application.usecases.call.UpdateCall;
-import com.dunnas.chamados_condominio.infrastructure.controllers.call.CallDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.call.CallEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.call.CallRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallRepository;
