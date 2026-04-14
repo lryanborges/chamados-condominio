@@ -14,13 +14,11 @@ public class Call {
     private LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
-    public Call(String title, String description, LocalDateTime deadline, Long userId, Long unitId, Long statusId, Long callTypeId) {
+    public Call(String title, String description, LocalDateTime deadline, Long unitId, Long callTypeId) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.userId = userId;
         this.unitId = unitId;
-        this.statusId = statusId;
         this.callTypeId = callTypeId;
     }
 
