@@ -4,10 +4,10 @@ import com.dunnas.chamados_condominio.domain.entity.Status;
 
 public class StatusDTOMapper {
     CreateStatusResponse toResponse(Status status) {
-        return new CreateStatusResponse(status.getName());
+        return new CreateStatusResponse(status.getName(), status.isFinal());
     }
 
-    Status toEntity(CreateStatusRequest createStatusRequest) {
-        return new Status(createStatusRequest.name());
+    Status toEntity(CreateStatusRequest request) {
+        return new Status(request.name(), request.isFinal());
     }
 }

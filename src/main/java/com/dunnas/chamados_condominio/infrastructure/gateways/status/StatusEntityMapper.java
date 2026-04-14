@@ -5,10 +5,10 @@ import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusEn
 
 public class StatusEntityMapper {
     StatusEntity toEntity(Status status) {
-        return new StatusEntity(status.getName());
+        return new StatusEntity(status.getName(), status.isFinal());
     }
 
     Status toDomainObj(StatusEntity statusEntity) {
-        return new Status(statusEntity.getName());
+        return new Status(statusEntity.getName(), statusEntity.isFinal());
     }
 }

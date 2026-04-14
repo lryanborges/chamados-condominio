@@ -1,11 +1,13 @@
 package com.dunnas.chamados_condominio.domain.entity;
 
 public class Status {
-    Long id;
-    String name;
+    private Long id;
+    private String name;
+    private boolean isFinal;
 
-    public Status(String name) {
+    public Status(String name, boolean isFinal) {
         this.name = name;
+        this.isFinal = isFinal;
     }
 
     public Long getId() {
@@ -22,5 +24,13 @@ public class Status {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isFinal() {
+        return isFinal;
+    }
+
+    public void setFinal(boolean aFinal) {
+        isFinal = aFinal;
     }
 }
