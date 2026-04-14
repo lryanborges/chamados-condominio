@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("blocks")
+@RequestMapping("api/blocks")
 public class BlockController {
     private final CreateBlock createBlock;
     private final BlockDTOMapper blockDTOMapper;
