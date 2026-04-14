@@ -15,6 +15,15 @@ public class UserEntityMapper {
     User toDomainObj(UserEntity userEntity) {
         User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getRole(), userEntity.getScope());
         user.setId(userEntity.getId());
+        if (userEntity.getUnits() != null) {
+            user.setUnitIds(
+                    userEntity.getUnits()
+                            .stream()
+                            .map(unit -> unit.getId())
+                            .toList()
+            );
+        }
+
         return user;
     }
 
