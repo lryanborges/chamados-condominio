@@ -17,10 +17,9 @@ public class CommentEntity {
 
     public CommentEntity() {}
 
-    public CommentEntity(String content, Long callId, Long userId) {
+    public CommentEntity(String content, Long callId) {
         this.content = content;
         this.callId = callId;
-        this.userId = userId;
     }
 
     public Long getId() {

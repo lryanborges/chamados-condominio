@@ -8,6 +8,6 @@ public class CommentDTOMapper {
     }
 
     Comment toEntity(CommentRequest request) {
-        return new Comment(request.content(), request.callId(), request.userId());
+        return new Comment(request.content(), request.callId());
     }
 }

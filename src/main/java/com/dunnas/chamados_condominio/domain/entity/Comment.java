@@ -9,10 +9,9 @@ public class Comment {
     private Long userId;
     private LocalDateTime createdAt;
 
-    public Comment(String content, Long callId, Long userId) {
+    public Comment(String content, Long callId) {
         this.content = content;
         this.callId = callId;
-        this.userId = userId;
     }
 
     public Long getId() {
