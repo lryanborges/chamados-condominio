@@ -31,8 +31,10 @@ public class CallController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     CallResponse createCall(@RequestPart("data") CallRequest request, @RequestPart(value = "files", required = false) List<MultipartFile> annexes) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
         Call call = callDTOMapper.toEntity(request);
-        Call createdCall = createCall.createCall(call, annexes);
+        Call createdCall = createCall.createCall(call, annexes, loggedUserEmail);
         return callDTOMapper.toResponse(createdCall);
     }
 
