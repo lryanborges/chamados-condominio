@@ -21,4 +21,11 @@ public class CallTypeRepositoryGateway implements CallTypeGateway {
         CallTypeEntity savedCallType = repository.save(callTypeEntity);
         return mapper.toDomainObj(savedCallType);
     }
+
+    @Override
+    public CallType findCallTypeById(Long id) {
+        CallTypeEntity foundedCallType = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Call Type not found"));
+        return mapper.toDomainObj(foundedCallType);
+    }
 }

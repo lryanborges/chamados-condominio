@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
 import com.dunnas.chamados_condominio.application.usecases.calltype.CreateCallType;
+import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
 import com.dunnas.chamados_condominio.infrastructure.controllers.calltype.CallTypeDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.calltype.CallTypeEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.calltype.CallTypeRepositoryGateway;
@@ -14,6 +15,11 @@ public class CallTypeConfig {
     @Bean
     CreateCallType createCallType(CallTypeGateway callTypeGateway) {
         return new CreateCallType(callTypeGateway);
+    }
+
+    @Bean
+    FindCallTypeById findCallTypeById(CallTypeGateway callTypeGateway) {
+        return new FindCallTypeById(callTypeGateway);
     }
 
     @Bean

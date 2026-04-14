@@ -4,4 +4,5 @@ import com.dunnas.chamados_condominio.domain.entity.CallType;
 
 public interface CallTypeGateway {
     CallType createCallType(CallType callType);
+    CallType findCallTypeById(Long id);
 }
