@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.infrastructure.controllers.call;
 
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
+import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,11 +16,13 @@ import java.util.List;
 public class CallController {
     private final CreateCall createCall;
     private final FindAllCallByFilters findAllCallByFilters;
+    private final FindCallById findCallById;
     private final CallDTOMapper callDTOMapper;
 
-    public CallController(CreateCall createCall, FindAllCallByFilters findAllCallByFilters, CallDTOMapper callDTOMapper) {
+    public CallController(CreateCall createCall, FindAllCallByFilters findAllCallByFilters, FindCallById findCallById, CallDTOMapper callDTOMapper) {
         this.createCall = createCall;
         this.findAllCallByFilters = findAllCallByFilters;
+        this.findCallById = findCallById;
         this.callDTOMapper = callDTOMapper;
     }
 
@@ -31,13 +34,20 @@ public class CallController {
     }
 
     @GetMapping
-    List<CallResponse> getCalls(
+    List<CallResponse> findAllCalls(
             @RequestParam(required = false) Long statusId
     ) {
         String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getName(); // pega o email do usuário logado
+                .getAuthentication().getName();
 
         List<Call> calls = findAllCallByFilters.findAllCallByFilters(userEmail, statusId);
         return calls.stream().map(callDTOMapper::toResponse).toList();
     }
+
+    @GetMapping("/{id}")
+    CallResponse findCallById(@PathVariable Long id) {
+        Call call = findCallById.findCallById(id);
+        return callDTOMapper.toResponse(call);
+    }
+
 }
