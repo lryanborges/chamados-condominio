@@ -31,8 +31,8 @@ public class CallConfig {
     }
 
     @Bean
-    UpdateCall updateCall(CallGateway callGateway, StatusGateway statusGateway) {
-        return new UpdateCall(callGateway, statusGateway);
+    UpdateCall updateCall(CallGateway callGateway, StatusGateway statusGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+        return new UpdateCall(callGateway, statusGateway, userGateway, callTypeGateway);
     }
 
     @Bean

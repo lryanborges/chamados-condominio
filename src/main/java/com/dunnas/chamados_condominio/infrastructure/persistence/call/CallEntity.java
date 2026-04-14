@@ -34,6 +34,10 @@ public class CallEntity {
         this.callTypeId = callTypeId;
     }
 
+    public CallEntity(Long statusId){
+        this.statusId = statusId;
+    }
+
     public Long getId() {
         return id;
     }
