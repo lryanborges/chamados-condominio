@@ -3,7 +3,7 @@ package com.dunnas.chamados_condominio.main;
 import com.dunnas.chamados_condominio.application.gateways.StatusGateway;
 import com.dunnas.chamados_condominio.application.usecases.status.CreateStatus;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
-import com.dunnas.chamados_condominio.infrastructure.controllers.status.StatusDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.status.StatusDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.status.StatusEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.status.StatusRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusRepository;
