@@ -3,6 +3,7 @@ package com.dunnas.chamados_condominio.infrastructure.controllers.call;
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
+import com.dunnas.chamados_condominio.application.usecases.call.UpdateCall;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +18,14 @@ public class CallController {
     private final CreateCall createCall;
     private final FindAllCallByFilters findAllCallByFilters;
     private final FindCallById findCallById;
+    private final UpdateCall updateCall;
     private final CallDTOMapper callDTOMapper;
 
-    public CallController(CreateCall createCall, FindAllCallByFilters findAllCallByFilters, FindCallById findCallById, CallDTOMapper callDTOMapper) {
+    public CallController(CreateCall createCall, FindAllCallByFilters findAllCallByFilters, FindCallById findCallById, UpdateCall updateCall, CallDTOMapper callDTOMapper) {
         this.createCall = createCall;
         this.findAllCallByFilters = findAllCallByFilters;
         this.findCallById = findCallById;
+        this.updateCall = updateCall;
         this.callDTOMapper = callDTOMapper;
     }
 
@@ -48,6 +51,13 @@ public class CallController {
     CallResponse findCallById(@PathVariable Long id) {
         Call call = findCallById.findCallById(id);
         return callDTOMapper.toResponse(call);
+    }
+
+    @PatchMapping("/{id}")
+    CallResponse updateCall(@PathVariable Long id, @RequestBody CallRequest request) {
+        Call call = callDTOMapper.toEntity(request);
+        Call updatedCall = updateCall.updateCall(id, call);
+        return callDTOMapper.toResponse(updatedCall);
     }
 
 }
