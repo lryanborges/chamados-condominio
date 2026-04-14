@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("calls")
+@RequestMapping("api/calls")
 public class CallController {
     private final CreateCall createCall;
     private final FindAllCallByFilters findAllCallByFilters;

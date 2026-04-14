@@ -6,7 +6,7 @@ import com.dunnas.chamados_condominio.domain.entity.Status;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("status")
+@RequestMapping("api/status")
 public class StatusController {
     private final CreateStatus createStatus;
     private final FindStatusById findStatusById;

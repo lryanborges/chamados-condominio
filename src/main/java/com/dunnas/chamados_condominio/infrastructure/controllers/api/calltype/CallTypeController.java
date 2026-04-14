@@ -6,7 +6,7 @@ import com.dunnas.chamados_condominio.domain.entity.CallType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/calltypes")
+@RequestMapping("api/calltypes")
 public class CallTypeController {
     private final CreateCallType createCallType;
     private final FindCallTypeById findCallTypeById;
