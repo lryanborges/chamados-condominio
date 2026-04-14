@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.application.usecases.user;
 
+import com.dunnas.chamados_condominio.application.exceptions.ForbiddenException;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.domain.entity.Role;
 import com.dunnas.chamados_condominio.domain.entity.User;
@@ -18,7 +19,7 @@ public class CreateUser {
         User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
 
         if (loggedUser.getRole() != Role.ADMIN) {
-            throw new RuntimeException("Only admins can create users");
+            throw new ForbiddenException("Only admins can create users");
         }
 
         String encriptedPassword = passwordEncoder.encode(newUser.getPassword());

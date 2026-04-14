@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.application.usecases.call;
 
+import com.dunnas.chamados_condominio.application.exceptions.ForbiddenException;
 import com.dunnas.chamados_condominio.application.gateways.AnnexGateway;
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.application.gateways.FileStorageGateway;
@@ -35,7 +36,7 @@ public class CreateCall {
         if (loggedUser.getRole() == Role.RESIDENT) {
             boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnitId());
             if (!belongsToUnit) {
-                throw new RuntimeException("Residents can only open calls in their own units");
+                throw new ForbiddenException("Residents can only open calls in their own units");
             }
         }
 

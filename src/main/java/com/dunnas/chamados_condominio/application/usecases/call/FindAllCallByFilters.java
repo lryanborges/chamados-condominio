@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.application.usecases.call;
 
+import com.dunnas.chamados_condominio.application.exceptions.NotFoundException;
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.domain.entity.Call;
@@ -19,6 +20,10 @@ public class FindAllCallByFilters {
 
     public List<Call> findAllCallByFilters(String userEmail, Long statusId) {
         User user = userGateway.findUserByEmail(userEmail);
+
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
 
         String callType = null;
         Long unitId = null;
