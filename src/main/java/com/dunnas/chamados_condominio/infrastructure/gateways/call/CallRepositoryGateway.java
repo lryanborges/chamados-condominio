@@ -4,7 +4,6 @@ import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallRepository;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -30,5 +29,13 @@ public class CallRepositoryGateway implements CallGateway {
                 .stream()
                 .map(mapper::toDomainObj)
                 .toList();
+    }
+
+    @Override
+    public Call findCallById(Long id) {
+        CallEntity foundedCall = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Call not found"));
+
+        return mapper.toDomainObj(foundedCall);
     }
 }
