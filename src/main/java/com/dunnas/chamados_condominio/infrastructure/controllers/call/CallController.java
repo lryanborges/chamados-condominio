@@ -56,9 +56,11 @@ public class CallController {
     }
 
     @PatchMapping("/{id}")
-    CallResponse updateCall(@PathVariable Long id, @RequestBody CallRequest request) {
-        Call call = callDTOMapper.toEntity(request);
-        Call updatedCall = updateCall.updateCall(id, call);
+    CallResponse updateCall(@PathVariable Long id, @RequestBody UpdateCallRequest request) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        Call call = callDTOMapper.toEntityUpdate(request);
+        Call updatedCall = updateCall.updateCall(id, call, loggedUserEmail);
         return callDTOMapper.toResponse(updatedCall);
     }
 

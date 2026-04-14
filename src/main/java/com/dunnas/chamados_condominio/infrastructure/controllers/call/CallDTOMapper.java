@@ -10,4 +10,8 @@ public class CallDTOMapper {
     Call toEntity(CallRequest request){
         return new Call(request.title(), request.description(), request.deadline(), request.unitId(), request.callTypeId());
     }
+
+    Call toEntityUpdate(UpdateCallRequest request){
+        return new Call(request.statusId());
+    }
 }

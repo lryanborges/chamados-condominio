@@ -22,6 +22,10 @@ public class Call {
         this.callTypeId = callTypeId;
     }
 
+    public Call(Long statusId) {
+        this.statusId = statusId;
+    }
+
     public Long getId() {
         return id;
     }

@@ -17,6 +17,8 @@ public class CallEntityMapper {
         call.setCreatedAt(callEntity.getCreatedAt());
         call.setFinishedAt(callEntity.getFinishedAt());
         call.setId(callEntity.getId());
+        call.setStatusId(callEntity.getStatusId());
+        call.setUserId(callEntity.getUserId());
         return call;
     }
 }
