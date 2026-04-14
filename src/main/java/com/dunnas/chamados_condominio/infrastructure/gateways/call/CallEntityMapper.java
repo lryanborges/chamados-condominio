@@ -13,7 +13,7 @@ public class CallEntityMapper {
     }
 
     Call toDomainObj(CallEntity callEntity) {
-        Call call = new Call(callEntity.getTitle(), callEntity.getDescription(), callEntity.getDeadline(), callEntity.getUserId(), callEntity.getUnitId(), callEntity.getStatusId(), callEntity.getCallTypeId());
+        Call call = new Call(callEntity.getTitle(), callEntity.getDescription(), callEntity.getDeadline(), callEntity.getUnitId(), callEntity.getCallTypeId());
         call.setCreatedAt(callEntity.getCreatedAt());
         call.setFinishedAt(callEntity.getFinishedAt());
         call.setId(callEntity.getId());

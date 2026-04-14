@@ -39,8 +39,9 @@ public class CreateCall {
             }
         }
 
-        call.setCreatedAt(LocalDateTime.now());
+        call.setUserId(loggedUser.getId());
         call.setStatusId(1L);
+        call.setCreatedAt(LocalDateTime.now());
         Call createdCall = callGateway.createCall(call);
 
         annexes.stream().forEach(file -> {
