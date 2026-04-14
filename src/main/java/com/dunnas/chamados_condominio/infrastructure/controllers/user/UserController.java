@@ -3,6 +3,8 @@ package com.dunnas.chamados_condominio.infrastructure.controllers.user;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
 import com.dunnas.chamados_condominio.domain.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,12 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse createUser(@RequestBody UserRequest request) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
         User newUser = userDTOMapper.toEntity(request);
-        User createdUser = createUser.createUser(newUser);
+        User createdUser = createUser.createUser(newUser, loggedUserEmail);
         return userDTOMapper.toResponse(createdUser);
     }
 
@@ -54,21 +59,30 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
         User updatedUser = userDTOMapper.toEntity(request);
-        User user = updateUser.updateUser(id, updatedUser);
+        User user = updateUser.updateUser(id, updatedUser, loggedUserEmail);
         return userDTOMapper.toResponse(user);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        deleteUser.deleteUser(id);
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        deleteUser.deleteUser(id, loggedUserEmail);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{userId}/units")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> linkUnitToUser(@PathVariable Long userId, @RequestBody List<Long> unitIds) {
-        linkUserToUnit.link(userId, unitIds);
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        linkUserToUnit.link(userId, unitIds, loggedUserEmail);
         return ResponseEntity.noContent().build();
     }
 

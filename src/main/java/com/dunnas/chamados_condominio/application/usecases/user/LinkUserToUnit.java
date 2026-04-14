@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.application.usecases.user;
 
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
+import com.dunnas.chamados_condominio.domain.entity.Role;
 import com.dunnas.chamados_condominio.domain.entity.Unit;
 import com.dunnas.chamados_condominio.domain.entity.User;
 
@@ -16,7 +17,13 @@ public class LinkUserToUnit {
         this.unitGateway = unitGateway;
     }
 
-    public void link(Long userId, List<Long> unitIds) {
+    public void link(Long userId, List<Long> unitIds, String loggedUserEmail) {
+        User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
+
+        if (loggedUser.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only admins can link users to units");
+        }
+
         User user = userGateway.findUserById(userId);
 
         unitIds.forEach(unitId -> {

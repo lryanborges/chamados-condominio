@@ -1,6 +1,7 @@
 package com.dunnas.chamados_condominio.application.usecases.user;
 
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
+import com.dunnas.chamados_condominio.domain.entity.Role;
 import com.dunnas.chamados_condominio.domain.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,7 +14,13 @@ public class UpdateUser {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User updateUser(Long id, User updatedUser) {
+    public User updateUser(Long id, User updatedUser, String loggedUserEmail) {
+        User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
+
+        if (loggedUser.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only admins can update users");
+        }
+
         User foundUser = userGateway.findUserById(id);
         if(updatedUser.getName() != null) { foundUser.setName(updatedUser.getName()); }
         if(updatedUser.getEmail() != null) { foundUser.setEmail(updatedUser.getEmail()); }
