@@ -1,5 +1,7 @@
 package com.dunnas.chamados_condominio.application.usecases.user;
 
+import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
+import com.dunnas.chamados_condominio.application.exceptions.ForbiddenException;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.domain.entity.Role;
 import com.dunnas.chamados_condominio.domain.entity.User;
@@ -12,10 +14,14 @@ public class DeleteUser {
     }
 
     public void deleteUser(Long id, String loggedUserEmail) {
+        if (id == null) {
+            throw new BadRequestException("User id must not be null");
+        }
+
         User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
 
         if (loggedUser.getRole() != Role.ADMIN) {
-            throw new RuntimeException("Only admins can delete users");
+            throw new ForbiddenException("Only admins can delete users");
         }
         userGateway.deleteUser(id);
     }

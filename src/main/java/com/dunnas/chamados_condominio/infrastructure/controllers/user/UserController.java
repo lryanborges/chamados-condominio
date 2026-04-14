@@ -33,7 +33,6 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse createUser(@RequestBody UserRequest request) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
@@ -59,7 +58,6 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest request) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
@@ -69,7 +67,6 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
@@ -78,7 +75,6 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/units")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> linkUnitToUser(@PathVariable Long userId, @RequestBody List<Long> unitIds) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();

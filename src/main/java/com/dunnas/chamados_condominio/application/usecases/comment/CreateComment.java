@@ -1,5 +1,8 @@
 package com.dunnas.chamados_condominio.application.usecases.comment;
 
+import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
+import com.dunnas.chamados_condominio.application.exceptions.ForbiddenException;
+import com.dunnas.chamados_condominio.application.exceptions.NotFoundException;
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
 import com.dunnas.chamados_condominio.application.gateways.CommentGateway;
@@ -22,14 +25,22 @@ public class CreateComment {
     }
 
     public Comment createComment(Comment comment, String loggedUserEmail) {
+        if (comment == null) {
+            throw new BadRequestException("Comment must not be null");
+        }
+        if (comment.getCallId() == null) {
+            throw new BadRequestException("Call id must not be null");
+        }
+
+
         Call call = callGateway.findCallById(comment.getCallId());
         User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
 
         if (call == null) {
-            throw new RuntimeException("Call not found");
+            throw new NotFoundException("Call not found");
         }
         if (loggedUser == null) {
-            throw new RuntimeException("User not found");
+            throw new NotFoundException("User not found");
         }
 
         CallType calltype = callTypeGateway.findCallTypeById(call.getCallTypeId());
@@ -37,14 +48,14 @@ public class CreateComment {
         if (loggedUser.getRole() == Role.RESIDENT) {
             boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnitId());
             if (!belongsToUnit) {
-                throw new RuntimeException("Residents can only comment in their own units");
+                throw new ForbiddenException("Residents can only comment in their own units");
             }
         }
 
         if (loggedUser.getRole() == Role.COLLABORATOR) {
             boolean belongsToScope = loggedUser.getScope().equalsIgnoreCase(calltype.getTitle());
             if(!belongsToScope) {
-                throw new RuntimeException("Collaborators can only comment in their scope");
+                throw new ForbiddenException("Collaborators can only comment in their scope");
             }
         }
 
