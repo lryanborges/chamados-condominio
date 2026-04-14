@@ -38,4 +38,11 @@ public class CallRepositoryGateway implements CallGateway {
 
         return mapper.toDomainObj(foundedCall);
     }
+
+    @Override
+    public Call updateCall(Call call) {
+        CallEntity callEntity = mapper.toEntity(call);
+        CallEntity savedCall = repository.save(callEntity);
+        return mapper.toDomainObj(savedCall);
+    }
 }
