@@ -21,4 +21,11 @@ public class StatusRepositoryGateway implements StatusGateway {
         StatusEntity savedStatus = repository.save(statusEntity);
         return mapper.toDomainObj(savedStatus);
     }
+
+    @Override
+    public Status findStatusById(Long id) {
+        return repository.findById(id)
+                .map(mapper::toDomainObj)
+                .orElseThrow(() -> new RuntimeException("Status não encontrado"));
+    }
 }

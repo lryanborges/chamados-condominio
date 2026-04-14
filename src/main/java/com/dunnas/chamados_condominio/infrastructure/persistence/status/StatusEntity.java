@@ -9,12 +9,14 @@ public class StatusEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
+    private Boolean isFinal;
 
     public StatusEntity() {
     }
 
-    public StatusEntity(String name) {
+    public StatusEntity(String name, Boolean isFinal) {
         this.name = name;
+        this.isFinal = isFinal;
     }
 
     public Long getId() {
@@ -31,5 +33,13 @@ public class StatusEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean isFinal() {
+        return isFinal;
+    }
+
+    public void setIsFinal(Boolean isFinal) {
+        this.isFinal = isFinal;
     }
 }
