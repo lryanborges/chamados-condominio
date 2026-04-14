@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 public class CallConfig {
 
     @Bean
-    CreateCall createCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway) {
-        return new CreateCall(callGateway, annexGateway, fileStorageGateway, userGateway);
+    CreateCall createCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+        return new CreateCall(callGateway, annexGateway, fileStorageGateway, userGateway, callTypeGateway);
     }
 
     @Bean

@@ -1,14 +1,8 @@
 package com.dunnas.chamados_condominio.application.usecases.call;
 
 import com.dunnas.chamados_condominio.application.exceptions.ForbiddenException;
-import com.dunnas.chamados_condominio.application.gateways.AnnexGateway;
-import com.dunnas.chamados_condominio.application.gateways.CallGateway;
-import com.dunnas.chamados_condominio.application.gateways.FileStorageGateway;
-import com.dunnas.chamados_condominio.application.gateways.UserGateway;
-import com.dunnas.chamados_condominio.domain.entity.Annex;
-import com.dunnas.chamados_condominio.domain.entity.Call;
-import com.dunnas.chamados_condominio.domain.entity.Role;
-import com.dunnas.chamados_condominio.domain.entity.User;
+import com.dunnas.chamados_condominio.application.gateways.*;
+import com.dunnas.chamados_condominio.domain.entity.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -19,12 +13,14 @@ public class CreateCall {
     private final AnnexGateway annexGateway;
     private final FileStorageGateway fileStorageGateway;
     private final UserGateway userGateway;
+    private final CallTypeGateway callTypeGateway;
 
-    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway) {
+    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
         this.callGateway = callGateway;
         this.annexGateway = annexGateway;
         this.fileStorageGateway = fileStorageGateway;
         this.userGateway = userGateway;
+        this.callTypeGateway = callTypeGateway;
     }
 
     public Call createCall(Call call, List<MultipartFile> annexes, String loggedUserEmail) {
@@ -40,9 +36,17 @@ public class CreateCall {
             }
         }
 
+        CallType callType = callTypeGateway.findCallTypeById(call.getCallTypeId());
+        LocalDateTime createdAt = LocalDateTime.now();
+        Long hours = callType.getDeadline().longValue();
+        Long minutes = Math.round((callType.getDeadline() % 1) * 60);
+        LocalDateTime deadline = LocalDateTime.now().plusHours(hours).plusMinutes(minutes);
+
         call.setUserId(loggedUser.getId());
         call.setStatusId(1L);
-        call.setCreatedAt(LocalDateTime.now());
+        call.setCreatedAt(createdAt);
+        call.setDeadline(deadline);
+
         Call createdCall = callGateway.createCall(call);
 
         annexes.stream().forEach(file -> {
