@@ -68,6 +68,9 @@
         <a href="/users">
             <button>Gerenciar usuários</button>
         </a>
+        <a href="/blocks">
+            <button>Gerenciar blocos</button>
+        </a>
     </c:if>
 </div>
 

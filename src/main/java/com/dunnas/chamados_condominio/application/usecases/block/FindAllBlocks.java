@@ -12,7 +12,7 @@ public class FindAllBlocks {
         this.blockGateway = blockGateway;
     }
 
-    List<Block> findAllBlocks() {
+    public List<Block> findAllBlocks() {
         return blockGateway.findAllBlocks();
     }
 }
