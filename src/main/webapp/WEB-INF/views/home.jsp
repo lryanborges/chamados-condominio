@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,10 +59,16 @@
     <p><strong>Scopes:</strong> ${user.scope}</p>
 
     <div class="logout">
-        <form action="/login" method="post">
+        <form action="/logout" method="post">
             <button type="submit">Sair</button>
         </form>
     </div>
+
+    <c:if test="${user.role == 'ADMIN'}">
+        <a href="/users">
+            <button>Gerenciar usuários</button>
+        </a>
+    </c:if>
 </div>
 
 </body>

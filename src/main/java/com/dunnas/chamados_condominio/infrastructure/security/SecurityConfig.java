@@ -44,7 +44,8 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
                 )
                 .csrf(csrf -> csrf.disable());
 

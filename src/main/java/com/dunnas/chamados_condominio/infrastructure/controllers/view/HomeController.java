@@ -20,7 +20,7 @@ public class HomeController {
     public String home(Model model, Authentication authentication) {
 
         if (authentication == null || !authentication.isAuthenticated() || authentication.getName().equals("anonymousUser")) {
-            return "redirect:/login";
+            return "/login";
         }
 
         String email = authentication.getName();
