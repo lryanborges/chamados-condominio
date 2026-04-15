@@ -71,6 +71,15 @@
         <a href="/blocks">
             <button>Gerenciar blocos</button>
         </a>
+        <a href="/calls">
+            <button>Gerenciar chamados</button>
+        </a>
+    </c:if>
+
+    <c:if test="${user.role == 'RESIDENT' || user.role == 'COLLABORATOR'}">
+        <a href="/calls">
+            <button>Ver chamados</button>
+        </a>
     </c:if>
 </div>
 

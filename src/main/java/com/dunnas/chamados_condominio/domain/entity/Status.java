@@ -26,7 +26,7 @@ public class Status {
         this.name = name;
     }
 
-    public boolean isFinal() {
+    public boolean getIsFinal() {
         return isFinal;
     }
 

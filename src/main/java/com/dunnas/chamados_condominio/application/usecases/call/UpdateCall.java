@@ -51,7 +51,7 @@ public class UpdateCall {
         }
 
         Status currentStatus = statusGateway.findStatusById(foundCall.getStatusId());
-        if (currentStatus.isFinal()) {
+        if (currentStatus.getIsFinal()) {
             throw new BadRequestException("Call already finished and cannot be updated");
         }
 
@@ -62,7 +62,7 @@ public class UpdateCall {
                 throw new NotFoundException("Status not found");
             }
 
-            if (newStatus.isFinal()) {
+            if (newStatus.getIsFinal()) {
                 foundCall.setFinishedAt(LocalDateTime.now());
             }
 

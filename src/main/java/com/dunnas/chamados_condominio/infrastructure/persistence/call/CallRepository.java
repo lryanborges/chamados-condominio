@@ -11,14 +11,15 @@ public interface CallRepository extends JpaRepository<CallEntity, Long> {
     @Query("""
         SELECT c FROM CallEntity c
         WHERE (:statusId IS NULL OR c.statusId = :statusId)
-        AND (:unitId IS NULL OR c.unitId = :unitId)
+        AND (:unitIds IS NULL OR c.unitId IN :unitIds)
         AND (:callType IS NULL OR c.callTypeId IN (
-            SELECT ct.id FROM CallTypeEntity ct WHERE ct.title = :callType
+            SELECT ct.id FROM CallTypeEntity ct 
+            WHERE LOWER(ct.title) = LOWER(CAST(:callType AS string))
         ))
     """)
     List<CallEntity> findAllByFilters(
             @Param("statusId") Long statusId,
-            @Param("unitId") Long unitId,
+            @Param("unitIds") List<Long> unitIds,
             @Param("callType") String callType
     );
 }

@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Novo Bloco</title>
-  <link rel="stylesheet" type="text/css" href="/css/blocks.css" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
 <body>
 <div class="card">

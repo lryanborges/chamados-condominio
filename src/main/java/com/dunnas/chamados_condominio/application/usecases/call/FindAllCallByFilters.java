@@ -26,14 +26,14 @@ public class FindAllCallByFilters {
         }
 
         String callType = null;
-        Long unitId = null;
+        List<Long> unitIds = null;
 
         if (user.getRole() == Role.COLLABORATOR) {
             callType = user.getScope();
         } else if (user.getRole() == Role.RESIDENT) {
-            unitId = user.getUnitIds().get(0);
+            unitIds = user.getUnitIds();
         }
 
-        return callGateway.findAllCallByFilters(statusId, unitId, callType);
+        return callGateway.findAllCallByFilters(statusId, unitIds, callType);
     }
 }

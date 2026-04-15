@@ -24,8 +24,8 @@ public class CallRepositoryGateway implements CallGateway {
     }
 
     @Override
-    public List<Call> findAllCallByFilters(Long statusId, Long unitId, String callType) {
-        return repository.findAllByFilters(statusId, unitId, callType)
+    public List<Call> findAllCallByFilters(Long statusId, List<Long> unitIds, String callType) {
+        return repository.findAllByFilters(statusId, unitIds, callType)
                 .stream()
                 .map(mapper::toDomainObj)
                 .toList();
