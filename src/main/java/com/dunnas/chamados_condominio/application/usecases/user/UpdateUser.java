@@ -36,14 +36,14 @@ public class UpdateUser {
             throw new BadRequestException("Updated user data must not be null");
         }
 
-        if(updatedUser.getName() != null) { foundUser.setName(updatedUser.getName()); }
-        if(updatedUser.getEmail() != null) { foundUser.setEmail(updatedUser.getEmail()); }
-        if(updatedUser.getPassword() != null) {
+        if(updatedUser.getName() != null && !updatedUser.getName().isBlank()) { foundUser.setName(updatedUser.getName()); }
+        if(updatedUser.getEmail() != null && !updatedUser.getEmail().isBlank()) { foundUser.setEmail(updatedUser.getEmail()); }
+        if(updatedUser.getPassword() != null && !updatedUser.getPassword().isBlank()) {
             String encriptedPassword = passwordEncoder.encode(updatedUser.getPassword());
             foundUser.setPassword(encriptedPassword);
         }
         if(updatedUser.getRole() != null) { foundUser.setRole(updatedUser.getRole()); }
-        if(updatedUser.getScope() != null) { foundUser.setScope(updatedUser.getScope()); }
+        if(updatedUser.getScope() != null && !updatedUser.getScope().isBlank()) { foundUser.setScope(updatedUser.getScope()); }
 
         return userGateway.updateUser(foundUser);
     }
