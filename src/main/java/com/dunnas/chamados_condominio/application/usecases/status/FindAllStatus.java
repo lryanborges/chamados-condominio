@@ -12,7 +12,7 @@ public class FindAllStatus {
         this.statusGateway = statusGateway;
     }
 
-    public List<Status> FindAllStatus() {
+    public List<Status> findAllStatus() {
         return statusGateway.findAllStatus();
     }
 }
