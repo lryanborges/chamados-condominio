@@ -4,6 +4,7 @@ import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.usecases.unit.CreateUnit;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByBlockId;
+import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitRepository;
@@ -26,6 +27,11 @@ public class UnitConfig {
     @Bean
     FindUnitsByBlockId findUnitsByBlockId(UnitGateway unitGateway) {
         return new FindUnitsByBlockId(unitGateway);
+    }
+
+    @Bean
+    FindUnitsByUserId findUnitsByUserId(UnitGateway unitGateway) {
+        return new FindUnitsByUserId(unitGateway);
     }
 
     @Bean

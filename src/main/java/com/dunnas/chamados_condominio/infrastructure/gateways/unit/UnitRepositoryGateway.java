@@ -36,4 +36,12 @@ public class UnitRepositoryGateway implements UnitGateway {
         List<UnitEntity> unitEntities = repository.findByBlockId(blockId);
         return mapper.toDomainObjList(unitEntities);
     }
+
+    @Override
+    public List<Unit> findUnitByUserId(Long userId) {
+        List<UnitEntity> unitEntities = repository.findByUserId(userId);
+        return mapper.toDomainObjList(unitEntities);
+    }
+
+
 }

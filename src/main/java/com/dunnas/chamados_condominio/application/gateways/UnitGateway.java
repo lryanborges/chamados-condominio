@@ -8,4 +8,5 @@ public interface UnitGateway {
     Unit createUnit(Unit newUnit);
     Unit findUnitById(Long id);
     List<Unit> findUnitByBlockId(Long blockId);
+    List<Unit> findUnitByUserId(Long userId);
 }
