@@ -43,8 +43,13 @@
         </div>
 
         <div class="form-group">
-            <label for="scope">Escopo (Scope)</label>
-            <input type="text" id="scope" name="scope" placeholder="Ex: Bloco A / Geral" />
+            <label for="callType">Escopo</label>
+            <select id="callType" name="callTypeId" required class="form-control">
+                <option value="" disabled selected>Selecione o escopo...</option>
+                <c:forEach var="type" items="${callTypes}">
+                    <option value="${type.id}">${type.title}</option>
+                </c:forEach>
+            </select>
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1rem;">
