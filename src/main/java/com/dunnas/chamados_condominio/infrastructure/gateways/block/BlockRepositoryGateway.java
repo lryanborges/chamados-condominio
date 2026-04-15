@@ -5,6 +5,8 @@ import com.dunnas.chamados_condominio.domain.entity.Block;
 import com.dunnas.chamados_condominio.infrastructure.persistence.block.BlockEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.block.BlockRepository;
 
+import java.util.List;
+
 public class BlockRepositoryGateway implements BlockGateway {
 
     private final BlockRepository blockRepository;
@@ -20,5 +22,11 @@ public class BlockRepositoryGateway implements BlockGateway {
         BlockEntity blockEntity = blockEntityMapper.toEntity(newBlock);
         BlockEntity savedBlock = blockRepository.save(blockEntity);
         return blockEntityMapper.toDomainObj(savedBlock);
+    }
+
+    @Override
+    public List<Block> findAllBlocks() {
+        List<BlockEntity> blockEntities = blockRepository.findAll();
+        return blockEntityMapper.toDomainObjList(blockEntities);
     }
 }
