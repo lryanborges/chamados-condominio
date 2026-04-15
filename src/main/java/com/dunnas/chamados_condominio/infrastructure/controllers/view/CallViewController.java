@@ -1,25 +1,26 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
-import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.application.usecases.block.FindBlockById;
+import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
-import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
+import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
 import com.dunnas.chamados_condominio.application.usecases.user.FindUserByEmail;
 import com.dunnas.chamados_condominio.application.usecases.user.FindUserById;
 import com.dunnas.chamados_condominio.domain.entity.*;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,8 +35,11 @@ public class CallViewController {
     private final FindBlockById findBlockById;
     private final FindCallTypeById findCallTypeById;
     private final FindAllCallTypes findAllCallTypes;
+    private final FindUnitsByUserId findUnitsByUserId;
+    private final CallDTOMapper callDTOMapper;
+    private final CreateCall createCall;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
@@ -45,13 +49,23 @@ public class CallViewController {
         this.findBlockById = findBlockById;
         this.findCallTypeById = findCallTypeById;
         this.findAllCallTypes = findAllCallTypes;
+        this.findUnitsByUserId = findUnitsByUserId;
+        this.callDTOMapper = callDTOMapper;
+        this.createCall = createCall;
     }
 
     @GetMapping("/new")
     public String formCreateCall(Model model) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        User loggedUser = findUserByEmail.findUserByEmail(loggedUserEmail);
+
         List<CallType> callTypes = findAllCallTypes.findAllCallTypes();
+        List<Unit> userUnits = findUnitsByUserId.findUnitsByUserId(loggedUser.getId());
 
         model.addAttribute("callTypes", callTypes);
+        model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("userUnits", userUnits);
 
         return "call/call-form";
     }
@@ -60,11 +74,9 @@ public class CallViewController {
     public String listCalls(@RequestParam(required = false) Long statusId, Model model) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
-        User loggedUser = findUserByEmail.findUserByEmail(loggedUserEmail);
         List<Call> calls = findAllCallByFilters.findAllCallByFilters(loggedUserEmail, statusId);
 
         model.addAttribute("calls", calls);
-        model.addAttribute("loggedUser", loggedUser);
 
         return "call/calls";
     }
@@ -85,6 +97,18 @@ public class CallViewController {
         model.addAttribute("block", block);
         model.addAttribute("callType", callType);
         return "call/call-detail";
+    }
+
+    @PostMapping
+    public String createCall(@ModelAttribute CallRequest request,
+                             @RequestParam(value = "annexes", required = false) List<MultipartFile> files) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        Call call = callDTOMapper.toEntity(request);
+        createCall.createCall(call, files, loggedUserEmail);
+
+        return "redirect:/calls";
     }
 
 }

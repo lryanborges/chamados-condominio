@@ -10,8 +10,8 @@ public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
     List<UnitEntity> findByBlockId(Long blockId);
     @Query("""
         SELECT u FROM UnitEntity u 
-        JOIN u.users user 
-        WHERE user.id = :userId
+        JOIN u.users us 
+        WHERE us.id = :userId
     """)
     List<UnitEntity> findAllByUserId(@Param("userId") Long userId);
 }
