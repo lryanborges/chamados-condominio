@@ -36,7 +36,11 @@
                     <td>${block.qtdFloors}</td>
                     <td>${block.nUnitsPerFloor}</td>
                     <td>${block.qtdFloors * block.nUnitsPerFloor}</td>
-                    <td></td>
+                    <td>
+                        <a href="/units/${block.id}" class="btn-detalhes">
+                            Ver Unidades
+                        </a>
+                    </td>
                 </tr>
             </c:forEach>
         </c:otherwise>
