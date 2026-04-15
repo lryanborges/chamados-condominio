@@ -1,86 +1,51 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Home</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 400px;
-        }
-
-        h2 {
-            margin-bottom: 1rem;
-        }
-
-        p {
-            margin: 0.5rem 0;
-        }
-
-        .logout {
-            margin-top: 1.5rem;
-        }
-
-        button {
-            padding: 0.6rem 1rem;
-            border: none;
-            background: #e11d48;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #be123c;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Painel Principal</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 
-<div class="card">
-    <h2>Bem-vindo 👋</h2>
+<div class="header">
+    <h2>Bem-vindo, ${user.name} 👋</h2>
+    <form action="/logout" method="post" style="margin: 0;">
+        <button type="submit" class="btn-delete">Sair</button>
+    </form>
+</div>
 
-    <p><strong>Usuário:</strong> ${user.name}</p>
-    <p><strong>Role:</strong> ${user.role}</p>
-    <p><strong>Scopes:</strong> ${user.scope}</p>
-
-    <div class="logout">
-        <form action="/logout" method="post">
-            <button type="submit">Sair</button>
-        </form>
+<div class="form-container" style="max-width: 800px;">
+    <div style="margin-bottom: 2rem;">
+        <p><strong>Perfil:</strong> <span class="status-badge status-progresso">${user.role}</span></p>
+        <p><strong>Escopo de Acesso:</strong> ${user.scope}</p>
     </div>
 
-    <c:if test="${user.role == 'ADMIN'}">
-        <a href="/users">
-            <button>Gerenciar usuários</button>
-        </a>
-        <a href="/blocks">
-            <button>Gerenciar blocos</button>
-        </a>
-        <a href="/calls">
-            <button>Gerenciar chamados</button>
-        </a>
-    </c:if>
+    <h3 style="margin-bottom: 1rem; color: #333;">Ações Disponíveis</h3>
 
-    <c:if test="${user.role == 'RESIDENT' || user.role == 'COLLABORATOR'}">
-        <a href="/calls">
-            <button>Ver chamados</button>
-        </a>
-    </c:if>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+
+        <c:if test="${user.role == 'ADMIN'}">
+            <a href="/users" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+                Gerenciar Usuários
+            </a>
+            <a href="/blocks" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+                Gerenciar Blocos
+            </a>
+            <a href="/calls" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+                Gerenciar Chamados
+            </a>
+        </c:if>
+
+        <c:if test="${user.role == 'RESIDENT' || user.role == 'COLLABORATOR'}">
+            <a href="/calls" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+                Meus Chamados
+            </a>
+        </c:if>
+
+    </div>
 </div>
 
 </body>
