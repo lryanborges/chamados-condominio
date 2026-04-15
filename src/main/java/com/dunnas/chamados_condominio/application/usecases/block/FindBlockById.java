@@ -10,7 +10,7 @@ public class FindBlockById {
         this.blockGateway = blockGateway;
     }
 
-    Block findBlockById(Long id) {
+    public Block findBlockById(Long id) {
         return blockGateway.findBlockById(id);
     }
 }
