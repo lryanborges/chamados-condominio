@@ -15,7 +15,7 @@
 </div>
 
 <div class="form-container">
-  <form action="/calls" method="POST">
+  <form action="/calls" method="POST" enctype="multipart/form-data">
     <div class="form-group">
       <label for="title">Título do Problema</label>
       <input type="text" id="title" name="title" placeholder="Ex: Vazamento na pia" required>
@@ -25,9 +25,9 @@
       <label for="unitId">Unidade Relacionada</label>
       <select id="unitId" name="unitId" required>
         <option value="">Selecione a unidade...</option>
-        <!-- <c:forEach var="unit" items="${userUnits}">
-          <option value="${unit.id}">Bloco ${unit.blockIdentity} - Ap. ${unit.identifier}</option>
-        </c:forEach> -->
+        <c:forEach var="unit" items="${userUnits}">
+          <option value="${unit.id}">ID ${unit.id} - Ap. ${unit.identifier}</option>
+        </c:forEach>
       </select>
     </div>
 
@@ -44,6 +44,12 @@
     <div class="form-group">
       <label for="description">Descrição Detalhada</label>
       <textarea id="description" name="description" placeholder="Descreva o que está acontecendo..." required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="annexes">Anexos (Fotos/Documentos)</label>
+      <input type="file" id="annexes" name="annexes" multiple>
+      <small>Você pode selecionar vários arquivos.</small>
     </div>
 
     <div style="display: flex; gap: 1rem; margin-top: 1rem;">

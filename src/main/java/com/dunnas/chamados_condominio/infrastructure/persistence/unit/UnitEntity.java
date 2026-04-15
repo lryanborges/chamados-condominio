@@ -3,6 +3,7 @@ package com.dunnas.chamados_condominio.infrastructure.persistence.unit;
 import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,13 +15,8 @@ public class UnitEntity {
     private Long blockId;
     private int floor;
     private String identifier;
-    @ManyToMany
-    @JoinTable(
-            name = "user_unit",
-            joinColumns = @JoinColumn(name = "unit_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserEntity> users;
+    @ManyToMany(mappedBy = "units")
+    private List<UserEntity> users = new ArrayList<>();
 
     public UnitEntity() {}
 
