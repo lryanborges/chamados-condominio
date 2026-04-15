@@ -1,10 +1,13 @@
 package com.dunnas.chamados_condominio.domain.entity;
 
+import java.util.List;
+
 public class Unit {
     private Long id;
     private Long blockId;
     private int floor;
     String identifier;
+    private List<User> users;
 
     public Unit(Long blockId, int floor, String identifier) {
         this.blockId = blockId;
@@ -42,5 +45,13 @@ public class Unit {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
