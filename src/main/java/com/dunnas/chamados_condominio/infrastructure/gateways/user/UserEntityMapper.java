@@ -6,13 +6,13 @@ import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity
 import java.util.List;
 
 public class UserEntityMapper {
-    UserEntity toEntity(User userDomainObj) {
+    public UserEntity toEntity(User userDomainObj) {
         UserEntity entity = new UserEntity(userDomainObj.getName(), userDomainObj.getEmail(), userDomainObj.getPassword(), userDomainObj.getRole(), userDomainObj.getScope());
         entity.setId(userDomainObj.getId());
         return entity;
     }
 
-    User toDomainObj(UserEntity userEntity) {
+    public User toDomainObj(UserEntity userEntity) {
         User user = new User(userEntity.getName(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getRole(), userEntity.getScope());
         user.setId(userEntity.getId());
         if (userEntity.getUnits() != null) {
@@ -27,7 +27,7 @@ public class UserEntityMapper {
         return user;
     }
 
-    List<User> toDomainObjList(List<UserEntity> userEntityList) {
+    public List<User> toDomainObjList(List<UserEntity> userEntityList) {
         return userEntityList.stream()
                 .map(this::toDomainObj)
                 .toList();

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="header">
-    <h2>Unidades do Bloco: ${blockId}</h2>
+    <h2>Unidades do Bloco: ${block.identity}</h2>
 </div>
 
 <table>
@@ -18,7 +18,7 @@
         <th>ID</th>
         <th>Andar</th>
         <th>Identificador (Apto)</th>
-    </tr>
+        <th>Moradores (User IDs)</th> </tr>
     </thead>
     <tbody>
     <c:choose>
@@ -38,6 +38,25 @@
                         </c:choose>
                     </td>
                     <td><strong>${unit.identifier}</strong></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty unit.users}">
+                                <span style="color: #999; font-style: italic;">Vago</span>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="user" items="${unit.users}">
+                                    <span class="status-badge status-aberto" style="margin-right: 5px;">
+                                        ID: ${user.id}
+                                    </span>
+                                    <span class="status-badge status-aberto" style="margin-right: 5px;">
+                                        Nome: ${user.name}
+                                    </span>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <a href="/units/${unit.id}/link-user" style="text-decoration: none; margin-left: 10px;" title="Vincular Usuário">➕</a>
+                    </td>
                 </tr>
             </c:forEach>
         </c:otherwise>

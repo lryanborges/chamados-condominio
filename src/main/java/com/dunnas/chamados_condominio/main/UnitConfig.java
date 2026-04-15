@@ -7,6 +7,7 @@ import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByBlock
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,8 +41,8 @@ public class UnitConfig {
     }
 
     @Bean
-    UnitEntityMapper unitEntityMapper() {
-        return new UnitEntityMapper();
+    UnitEntityMapper unitEntityMapper(UserEntityMapper userEntityMapper) {
+        return new UnitEntityMapper(userEntityMapper);
     }
 
 }
