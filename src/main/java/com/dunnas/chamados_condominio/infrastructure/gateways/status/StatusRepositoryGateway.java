@@ -5,6 +5,8 @@ import com.dunnas.chamados_condominio.domain.entity.Status;
 import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusRepository;
 
+import java.util.List;
+
 public class StatusRepositoryGateway implements StatusGateway {
 
     private final StatusRepository repository;
@@ -27,5 +29,11 @@ public class StatusRepositoryGateway implements StatusGateway {
         return repository.findById(id)
                 .map(mapper::toDomainObj)
                 .orElseThrow(() -> new RuntimeException("Status não encontrado"));
+    }
+
+    @Override
+    public List<Status> findAllStatus() {
+        List<StatusEntity> entityList = repository.findAll();
+        return mapper.toDomainObjList(entityList);
     }
 }
