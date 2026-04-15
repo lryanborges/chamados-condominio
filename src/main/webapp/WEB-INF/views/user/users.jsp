@@ -1,10 +1,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h2>Lista de usuários</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
 
-<table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse: collapse;">
+<div class="header">
+    <h2>Lista de Usuários</h2>
+    <c:if test="${userLogged.role == 'ADMIN'}">
+        <a href="/users/new" class="btn">+ Criar Usuário</a>
+    </c:if>
+</div>
 
+<c:if test="${not empty mensagemSucesso}">
+    <div class="alert alert-success">${mensagemSucesso}</div>
+</c:if>
+
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -13,46 +30,51 @@
         <th>Role</th>
         <th>Scope</th>
         <c:if test="${userLogged.role == 'ADMIN'}">
-            <th>Ações</th>
+            <th style="text-align: center;">Ações</th>
         </c:if>
     </tr>
     </thead>
-
     <tbody>
-    <c:forEach var="user" items="${users}">
-        <tr>
-            <td>${user.id}</td>
-            <td>${user.name}</td>
-            <td>${user.email}</td>
-            <td>${user.role}</td>
-            <td>${user.scope}</td>
+    <c:choose>
+        <c:when test="${empty users}">
+            <tr>
+                <td colspan="6" class="empty">Nenhum usuário encontrado.</td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="user" items="${users}">
+                <tr>
+                    <td>#${user.id}</td>
+                    <td><strong>${user.name}</strong></td>
+                    <td>${user.email}</td>
+                    <td><span class="status-badge status-progresso">${user.role}</span></td>
+                    <td>${user.scope}</td>
+                    <c:if test="${userLogged.role == 'ADMIN'}">
+                        <td>
+                            <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                <a href="/users/${user.id}/edit" class="btn-detalhes">Editar</a>
 
-            <c:if test="${userLogged.role == 'ADMIN'}">
-                <td>
-                    <a href="/users/${user.id}/edit">
-                        <button type="button">Editar</button>
-                    </a>
-                <td>
-                    <form action="/users/${user.id}/delete" method="post"
-                          onsubmit="return confirm('Tem certeza que deseja excluir?');">
-                        <button type="submit">Excluir</button>
-                    </form>
-                </td>
-                </td>
-            </c:if>
-
-        </tr>
-    </c:forEach>
+                                <form action="/users/${user.id}/delete" method="post"
+                                      onsubmit="return confirm('Tem certeza que deseja excluir?');"
+                                      class="form-delete">
+                                    <button type="submit" class="btn-delete"
+                                            style="padding: 4px 8px; font-size: 0.8rem; cursor: pointer;">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </c:if>
+                </tr>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
     </tbody>
-
 </table>
 
-<c:if test="${userLogged.role == 'ADMIN'}">
-    <a href="/users/new">
-        <button>Criar usuário</button>
-    </a>
-</c:if>
+<div style="margin-top: 2rem;">
+    <a href="/home" class="btn-voltar">&larr; Voltar ao Painel</a>
+</div>
 
-<a href="/home">
-    <button type="button">Voltar</button>
-</a>
+</body>
+</html>
