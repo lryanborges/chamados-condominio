@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.StatusGateway;
 import com.dunnas.chamados_condominio.application.usecases.status.CreateStatus;
+import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.status.StatusDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.status.StatusEntityMapper;
@@ -21,6 +22,11 @@ public class StatusConfig {
     @Bean
     FindStatusById findStatusById(StatusGateway statusGateway) {
         return new FindStatusById(statusGateway);
+    }
+
+    @Bean
+    FindAllStatus findAllStatus(StatusGateway statusGateway) {
+        return new FindAllStatus(statusGateway);
     }
 
     @Bean
