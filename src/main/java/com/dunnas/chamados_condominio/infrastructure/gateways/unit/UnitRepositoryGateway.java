@@ -5,6 +5,8 @@ import com.dunnas.chamados_condominio.domain.entity.Unit;
 import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitRepository;
 
+import java.util.List;
+
 public class UnitRepositoryGateway implements UnitGateway {
 
     private final UnitRepository repository;
@@ -27,5 +29,11 @@ public class UnitRepositoryGateway implements UnitGateway {
         UnitEntity unitEntity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Unit not found"));
         return mapper.toDomainObj(unitEntity);
+    }
+
+    @Override
+    public List<Unit> findUnitByBlockId(Long blockId) {
+        List<UnitEntity> unitEntities = repository.findByBlockId(blockId);
+        return mapper.toDomainObjList(unitEntities);
     }
 }
