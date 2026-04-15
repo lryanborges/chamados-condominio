@@ -24,7 +24,14 @@
 
 <div class="header">
   <h2>Chamados do Condomínio</h2>
-  <a href="/calls/new" class="btn">+ Abrir Chamado</a>
+  <div style="display: flex; gap: 0.5rem;">
+    <c:if test="${loggedUser.role == 'ADMIN'}">
+      <a href="/calltypes" class="btn-detalhes">+ Novo Tipo de Chamado</a>
+      <a href="/status" class="btn-detalhes">+ Novo Status</a>
+    </c:if>
+
+    <a href="/calls/new" class="btn">+ Abrir Chamado</a>
+  </div>
 </div>
 
 <table>

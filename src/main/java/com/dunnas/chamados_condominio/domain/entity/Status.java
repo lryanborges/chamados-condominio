@@ -3,7 +3,7 @@ package com.dunnas.chamados_condominio.domain.entity;
 public class Status {
     private Long id;
     private String name;
-    private boolean isFinal;
+    private Boolean isFinal;
 
     public Status(String name, boolean isFinal) {
         this.name = name;

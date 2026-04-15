@@ -7,11 +7,15 @@ import java.util.List;
 
 public class StatusEntityMapper {
     public StatusEntity toEntity(Status status) {
-        return new StatusEntity(status.getName(), status.getIsFinal());
+        StatusEntity statusEntity = new StatusEntity(status.getName(), status.getIsFinal());
+        statusEntity.setId(status.getId());
+        return statusEntity;
     }
 
     public Status toDomainObj(StatusEntity statusEntity) {
-        return new Status(statusEntity.getName(), statusEntity.isFinal());
+        Status status = new Status(statusEntity.getName(), statusEntity.getIsFinal());
+        status.setId(statusEntity.getId());
+        return status;
     }
 
     public List<Status> toDomainObjList(List<StatusEntity> statusEntityList) {
