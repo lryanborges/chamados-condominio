@@ -39,7 +39,7 @@ public class UnitRepositoryGateway implements UnitGateway {
 
     @Override
     public List<Unit> findUnitByUserId(Long userId) {
-        List<UnitEntity> unitEntities = repository.findByUserId(userId);
+        List<UnitEntity> unitEntities = repository.findAllByUserId(userId);
         return mapper.toDomainObjList(unitEntities);
     }
 

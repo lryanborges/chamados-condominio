@@ -51,7 +51,6 @@ public class CallViewController {
     public String formCreateCall(Model model) {
         List<CallType> callTypes = findAllCallTypes.findAllCallTypes();
 
-        System.out.println("att cache");
         model.addAttribute("callTypes", callTypes);
 
         return "call/call-form";

@@ -1,6 +1,9 @@
 package com.dunnas.chamados_condominio.infrastructure.persistence.unit;
 
+import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "unit")
@@ -11,6 +14,13 @@ public class UnitEntity {
     private Long blockId;
     private int floor;
     private String identifier;
+    @ManyToMany
+    @JoinTable(
+            name = "user_unit",
+            joinColumns = @JoinColumn(name = "unit_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<UserEntity> users;
 
     public UnitEntity() {}
 
@@ -50,5 +60,13 @@ public class UnitEntity {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
     }
 }
