@@ -74,9 +74,11 @@ public class CallViewController {
     public String listCalls(@RequestParam(required = false) Long statusId, Model model) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
+        User loggedUser = findUserByEmail.findUserByEmail(loggedUserEmail);
         List<Call> calls = findAllCallByFilters.findAllCallByFilters(loggedUserEmail, statusId);
 
         model.addAttribute("calls", calls);
+        model.addAttribute("loggedUser", loggedUser);
 
         return "call/calls";
     }

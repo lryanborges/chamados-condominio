@@ -35,7 +35,7 @@ public class StatusEntity {
         this.name = name;
     }
 
-    public Boolean isFinal() {
+    public Boolean getIsFinal() {
         return isFinal;
     }
 
