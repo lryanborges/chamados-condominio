@@ -4,7 +4,9 @@ import com.dunnas.chamados_condominio.application.gateways.CallGateway;
 import com.dunnas.chamados_condominio.application.usecases.block.FindBlockById;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
+import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
+import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.user.FindUserByEmail;
@@ -31,8 +33,9 @@ public class CallViewController {
     private final FindUnitById findUnitById;
     private final FindBlockById findBlockById;
     private final FindCallTypeById findCallTypeById;
+    private final FindAllCallTypes findAllCallTypes;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
@@ -41,6 +44,17 @@ public class CallViewController {
         this.findUnitById = findUnitById;
         this.findBlockById = findBlockById;
         this.findCallTypeById = findCallTypeById;
+        this.findAllCallTypes = findAllCallTypes;
+    }
+
+    @GetMapping("/new")
+    public String formCreateCall(Model model) {
+        List<CallType> callTypes = findAllCallTypes.findAllCallTypes();
+
+        System.out.println("att cache");
+        model.addAttribute("callTypes", callTypes);
+
+        return "call/call-form";
     }
 
     @GetMapping
@@ -56,7 +70,7 @@ public class CallViewController {
         return "call/calls";
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public String getCall(@PathVariable Long id, Model model) {
         Call call = findCallById.findCallById(id);
         Status status = findStatusById.findStatusById(call.getStatusId());
