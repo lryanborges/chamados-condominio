@@ -1,33 +1,59 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<h2>Criar Usuário</h2>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Usuário</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
 
-<form action="/users" method="post">
+<div class="header">
+    <h2>Criar Usuário</h2>
+</div>
 
-    <label>Nome</label>
-    <input type="text" name="name" required />
+<div class="form-container">
+    <form action="/users" method="POST">
 
-    <label>Email</label>
-    <input type="email" name="email" required />
+        <div class="form-group">
+            <label for="name">Nome Completo</label>
+            <input type="text" id="name" name="name" placeholder="Ex: João Silva" required />
+        </div>
 
-    <label>Senha</label>
-    <input type="password" name="password" required />
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="exemplo@email.com" required />
+        </div>
 
-    <label>Role</label>
-    <select name="role" id="role" required>
-        <option value="" disabled selected>Selecione uma função</option>
-        <option value="ADMIN">Administrador</option>
-        <option value="RESIDENT">Morador</option>
-        <option value="COLLABORATOR">Colaborador</option>
-    </select>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required />
+        </div>
 
-    <label>Scope</label>
-    <input type="text" name="scope"/>
+        <div class="form-group">
+            <label for="role">Função (Role)</label>
+            <select name="role" id="role" required>
+                <option value="" disabled selected>Selecione uma função...</option>
+                <option value="ADMIN">Administrador</option>
+                <option value="RESIDENT">Morador</option>
+                <option value="COLLABORATOR">Colaborador</option>
+            </select>
+        </div>
 
-    <button type="submit">Salvar</button>
+        <div class="form-group">
+            <label for="scope">Escopo (Scope)</label>
+            <input type="text" id="scope" name="scope" placeholder="Ex: Bloco A / Geral" />
+        </div>
 
-</form>
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button type="submit" class="btn">Salvar Usuário</button>
+            <a href="/users" class="btn-voltar" style="text-decoration: none; text-align: center;">Cancelar</a>
+        </div>
 
-<a href="/users">
-    <button type="button">Voltar</button>
-</a>
+    </form>
+</div>
+
+</body>
+</html>
