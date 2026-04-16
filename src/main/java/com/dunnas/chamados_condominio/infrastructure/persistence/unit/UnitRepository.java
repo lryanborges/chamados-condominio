@@ -7,7 +7,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
-    List<UnitEntity> findByBlockId(Long blockId);
+    @Query("SELECT u FROM UnitEntity u WHERE u.block.id = :blockId")
+    List<UnitEntity> findByBlockId(@Param("blockId") Long blockId);
+
     @Query("""
         SELECT u FROM UnitEntity u 
         JOIN u.users us 

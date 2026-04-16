@@ -7,23 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockEntityMapper {
-    BlockEntity toEntity(Block blockDomainObj) {
-        return new BlockEntity(blockDomainObj.getQtdFloors(), blockDomainObj.getnUnitsPerFloor(), blockDomainObj.getIdentity());
+    public BlockEntity toEntity(Block blockDomainObj) {
+        BlockEntity blockEntity = new BlockEntity(blockDomainObj.getQtdFloors(), blockDomainObj.getnUnitsPerFloor(), blockDomainObj.getIdentity());
+        blockEntity.setId(blockDomainObj.getId());
+        return blockEntity;
     }
 
-    Block toDomainObj(BlockEntity blockEntity) {
+    public Block toDomainObj(BlockEntity blockEntity) {
         Block block = new Block(blockEntity.getQtdFloors(), blockEntity.getnUnitsPerFloor(), blockEntity.getIdentity());
         block.setId(blockEntity.getId());
         return block;
     }
 
-    List<Block> toDomainObjList(List<BlockEntity> blockEntitiesList) {
+    public List<Block> toDomainObjList(List<BlockEntity> blockEntitiesList) {
         return blockEntitiesList.stream()
                 .map(this::toDomainObj)
                 .toList();
     }
 
-    List<BlockEntity> toEntityList(List<Block> blockDomainObjList) {
+    public List<BlockEntity> toEntityList(List<Block> blockDomainObjList) {
         return blockDomainObjList.stream()
                 .map(this::toEntity)
                 .toList();

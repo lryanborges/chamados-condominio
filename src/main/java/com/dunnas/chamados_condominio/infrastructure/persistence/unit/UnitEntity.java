@@ -1,5 +1,7 @@
 package com.dunnas.chamados_condominio.infrastructure.persistence.unit;
 
+import com.dunnas.chamados_condominio.domain.entity.Block;
+import com.dunnas.chamados_condominio.infrastructure.persistence.block.BlockEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
 
@@ -12,7 +14,10 @@ public class UnitEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long blockId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "block_id")
+    private BlockEntity block;
     private int floor;
     private String identifier;
     @ManyToMany(mappedBy = "units")
@@ -20,8 +25,8 @@ public class UnitEntity {
 
     public UnitEntity() {}
 
-    public UnitEntity(Long blockId, int floor, String identifier) {
-        this.blockId = blockId;
+    public UnitEntity(BlockEntity block, int floor, String identifier) {
+        this.block = block;
         this.floor = floor;
         this.identifier = identifier;
     }
@@ -32,14 +37,6 @@ public class UnitEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Long blockId) {
-        this.blockId = blockId;
     }
 
     public int getFloor() {
@@ -64,5 +61,13 @@ public class UnitEntity {
 
     public void setUsers(List<UserEntity> users) {
         this.users = users;
+    }
+
+    public BlockEntity getBlock() {
+        return block;
+    }
+
+    public void setBlock(BlockEntity block) {
+        this.block = block;
     }
 }
