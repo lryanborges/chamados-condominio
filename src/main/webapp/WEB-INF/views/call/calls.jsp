@@ -34,6 +34,32 @@
   </div>
 </div>
 
+<div class="filter-section">
+  <form action="/calls" method="GET" id="filterForm">
+    <label>Filtrar por Status:</label>
+    <select name="statusId" onchange="this.form.submit()">
+      <option value="">Todos os Chamados</option>
+      <c:forEach var="s" items="${status}">
+        <option value="${s.id}" ${param.statusId == s.id ? 'selected' : ''}>
+            ${s.name}
+        </option>
+      </c:forEach>
+    </select>
+  </form>
+</div>
+
+<c:if test="${not empty errorMessage}">
+  <div style="background-color: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #991b1b; font-weight: 600;">
+    ${errorMessage}
+  </div>
+</c:if>
+
+<c:if test="${not empty successMessage}">
+  <div style="background-color: #d1fae5; color: #065f46; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #065f46; font-weight: 600;">
+    ${successMessage}
+  </div>
+</c:if>
+
 <table>
   <thead>
   <tr>
@@ -44,6 +70,7 @@
     <th>Status</th>
     <th>Data de Criação</th>
     <th>Deadline</th>
+    <th>Data de Finalização</th>
     <th>Ações</th>
   </tr>
   </thead>
@@ -87,6 +114,7 @@
           </td>
           <td>${call.createdAt}</td>
           <td>${call.deadline}</td>
+          <td>${call.finishedAt}</td>
           <td>
             <a href="/calls/${call.id}" class="btn-detalhes">Detalhes</a>
           </td>
