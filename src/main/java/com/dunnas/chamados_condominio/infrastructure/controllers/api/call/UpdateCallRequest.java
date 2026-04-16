@@ -1,4 +1,6 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.api.call;
 
-public record UpdateCallRequest(Long statusId) {
+import com.dunnas.chamados_condominio.domain.entity.Status;
+
+public record UpdateCallRequest(Status status) {
 }

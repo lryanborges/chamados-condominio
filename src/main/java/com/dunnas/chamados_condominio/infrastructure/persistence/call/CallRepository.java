@@ -10,9 +10,11 @@ public interface CallRepository extends JpaRepository<CallEntity, Long> {
 
     @Query("""
         SELECT c FROM CallEntity c
-        WHERE (:statusId IS NULL OR c.statusId = :statusId)
-        AND (:unitIds IS NULL OR c.unitId IN :unitIds)
-        AND (:callType IS NULL OR c.callTypeId IN (
+        LEFT JOIN FETCH c.status
+        LEFT JOIN FETCH c.callType
+        WHERE (:statusId IS NULL OR c.status.id = :statusId)
+        AND (:unitIds IS NULL OR c.unit.id IN :unitIds)
+        AND (:callType IS NULL OR c.callType.id IN (
             SELECT ct.id FROM CallTypeEntity ct 
             WHERE LOWER(ct.title) = LOWER(CAST(:callType AS string))
         ))

@@ -59,9 +59,9 @@
         <tr>
           <td>#${call.id}</td>
           <td><strong>${call.title}</strong></td>
-          <td>Morador ID ${call.userId} - Ap. ${call.unitId}</td>
-          <td>${call.callTypeId}</td>
-          <td>${call.statusId}</td>
+          <td>Morador ID ${call.user.name} - Ap. ${call.unit.identifier}</td>
+          <td>${call.callType.title}</td>
+          <td>${call.status.name}</td>
           <td>${call.createdAt}</td>
           <td>${call.deadline}</td>
           <td>

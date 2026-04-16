@@ -7,22 +7,22 @@ public class Call {
     private String title;
     private String description;
     private LocalDateTime deadline;
-    private Long userId;
-    private Long unitId;
-    private Long statusId;
-    private Long callTypeId;
+    private User user;
+    private Unit unit;
+    private Status status;
+    private CallType callType;
     private LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
-    public Call(String title, String description, Long unitId, Long callTypeId) {
+    public Call(String title, String description, Unit unit, CallType callType) {
         this.title = title;
         this.description = description;
-        this.unitId = unitId;
-        this.callTypeId = callTypeId;
+        this.unit = unit;
+        this.callType = callType;
     }
 
-    public Call(Long statusId) {
-        this.statusId = statusId;
+    public Call(Status status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -57,38 +57,6 @@ public class Call {
         this.deadline = deadline;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Long unitId) {
-        this.unitId = unitId;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public Long getCallTypeId() {
-        return callTypeId;
-    }
-
-    public void setCallTypeId(Long callTypeId) {
-        this.callTypeId = callTypeId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -103,5 +71,37 @@ public class Call {
 
     public void setFinishedAt(LocalDateTime finishedAt) {
         this.finishedAt = finishedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public CallType getCallType() {
+        return callType;
+    }
+
+    public void setCallType(CallType callType) {
+        this.callType = callType;
     }
 }

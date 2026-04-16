@@ -1,6 +1,10 @@
 package com.dunnas.chamados_condominio.infrastructure.persistence.call;
 
 import com.dunnas.chamados_condominio.infrastructure.persistence.annex.AnnexEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.calltype.CallTypeEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,27 +19,40 @@ public class CallEntity {
     private String title;
     private String description;
     private LocalDateTime deadline;
-    private Long userId;
-    private Long unitId;
-    private Long statusId;
-    private Long callTypeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "unit_id")
+    private UnitEntity unit;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "status_id")
+    private StatusEntity status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "call_type_id")
+    private CallTypeEntity callType;
+
     private LocalDateTime createdAt;
     private LocalDateTime finishedAt;
 
     public CallEntity() {}
 
-    public CallEntity(String title, String description, LocalDateTime deadline, Long userId, Long unitId, Long statusId, Long callTypeId) {
+    public CallEntity(String title, String description, LocalDateTime deadline, UserEntity user, UnitEntity unit, StatusEntity status, CallTypeEntity callType) {
         this.title = title;
         this.description = description;
         this.deadline = deadline;
-        this.userId = userId;
-        this.unitId = unitId;
-        this.statusId = statusId;
-        this.callTypeId = callTypeId;
+        this.user = user;
+        this.unit = unit;
+        this.status = status;
+        this.callType = callType;
     }
 
-    public CallEntity(Long statusId){
-        this.statusId = statusId;
+    public CallEntity(StatusEntity status){
+        this.status = status;
     }
 
     public Long getId() {
@@ -70,38 +87,6 @@ public class CallEntity {
         this.deadline = deadline;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Long unitId) {
-        this.unitId = unitId;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public Long getCallTypeId() {
-        return callTypeId;
-    }
-
-    public void setCallTypeId(Long callTypeId) {
-        this.callTypeId = callTypeId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -118,4 +103,35 @@ public class CallEntity {
         this.finishedAt = finishedAt;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public UnitEntity getUnit() {
+        return unit;
+    }
+
+    public void setUnit(UnitEntity unit) {
+        this.unit = unit;
+    }
+
+    public StatusEntity getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusEntity status) {
+        this.status = status;
+    }
+
+    public CallTypeEntity getCallType() {
+        return callType;
+    }
+
+    public void setCallType(CallTypeEntity callType) {
+        this.callType = callType;
+    }
 }

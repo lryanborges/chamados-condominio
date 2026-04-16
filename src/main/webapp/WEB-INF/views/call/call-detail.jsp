@@ -28,11 +28,11 @@
     <div class="header">
       <h2>Chamado #${call.id}</h2>
       <c:choose>
-        <c:when test="${status.isFinal}">
-          <span class="status-badge status-final">${status.name}</span>
+        <c:when test="${call.status.isFinal}">
+          <span class="status-badge status-final">${call.status.name}</span>
         </c:when>
         <c:otherwise>
-          <span class="status-badge status-open">${status.name}</span>
+          <span class="status-badge status-open">${call.status.name}</span>
         </c:otherwise>
       </c:choose>
     </div>
@@ -45,17 +45,17 @@
 
       <div class="detail-row">
         <div class="detail-label">Tipo de Chamado:</div>
-        <div class="detail-value">${callType.title}</div>
+        <div class="detail-value">${call.callType.title}</div>
       </div>
 
       <div class="detail-row">
         <div class="detail-label">Solicitante:</div>
-        <div class="detail-value">${user.name} (${user.email})</div>
+        <div class="detail-value">${call.user.name} (${call.user.email})</div>
       </div>
 
       <div class="detail-row">
         <div class="detail-label">Localização:</div>
-        <div class="detail-value">Bloco ${block.identity} - Unidade ${unit.identifier}</div>
+        <div class="detail-value">Bloco ${block.identity} - Unidade ${call.unit.identifier}</div>
       </div>
 
       <div class="detail-row">
@@ -94,7 +94,7 @@
 
       <div style="margin-top: 2rem; display: flex; gap: 1rem;">
         <a href="/calls" class="btn-voltar">&larr; Voltar para a Lista</a>
-        <c:if test="${!status.isFinal}">
+        <c:if test="${!call.status.isFinal}">
           <a href="/calls/${call.id}/edit" class="btn" style="background-color: #f59e0b;">Editar Chamado</a>
         </c:if>
       </div>
@@ -123,7 +123,7 @@
         </c:if>
       </div>
 
-      <c:if test="${!status.isFinal}">
+      <c:if test="${!call.status.isFinal}">
         <form action="/calls/${call.id}/comments" method="POST" style="border-top: 1px solid #f3f4f6; padding-top: 1rem;">
           <textarea name="content" rows="3" placeholder="Escreva uma mensagem..."
                     style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; resize: none;" required></textarea>

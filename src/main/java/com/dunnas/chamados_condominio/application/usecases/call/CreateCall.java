@@ -13,37 +13,34 @@ public class CreateCall {
     private final AnnexGateway annexGateway;
     private final FileStorageGateway fileStorageGateway;
     private final UserGateway userGateway;
-    private final CallTypeGateway callTypeGateway;
 
-    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+    public CreateCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway) {
         this.callGateway = callGateway;
         this.annexGateway = annexGateway;
         this.fileStorageGateway = fileStorageGateway;
         this.userGateway = userGateway;
-        this.callTypeGateway = callTypeGateway;
     }
 
     public Call createCall(Call call, List<MultipartFile> annexes, String loggedUserEmail) {
         User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
 
-        System.out.println("User units: " + loggedUser.getUnitIds());
-        System.out.println("Call unit: " + call.getUnitId());
-
         if (loggedUser.getRole() == Role.RESIDENT) {
-            boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnitId());
+            boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnit().getId());
             if (!belongsToUnit) {
                 throw new ForbiddenException("Residents can only open calls in their own units");
             }
         }
 
-        CallType callType = callTypeGateway.findCallTypeById(call.getCallTypeId());
+        CallType callType = call.getCallType();
         LocalDateTime createdAt = LocalDateTime.now();
         Long hours = callType.getDeadline().longValue();
         Long minutes = Math.round((callType.getDeadline() % 1) * 60);
         LocalDateTime deadline = LocalDateTime.now().plusHours(hours).plusMinutes(minutes);
 
-        call.setUserId(loggedUser.getId());
-        call.setStatusId(1L);
+        call.setUser(loggedUser);
+        Status defaultStatus = new Status("Open", false);
+        defaultStatus.setId(1L);
+        call.setStatus(defaultStatus);
         call.setCreatedAt(createdAt);
         call.setDeadline(deadline);
 
