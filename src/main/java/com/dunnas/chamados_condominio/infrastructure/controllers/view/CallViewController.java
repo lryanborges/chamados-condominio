@@ -6,6 +6,8 @@ import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFil
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
+import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
+import com.dunnas.chamados_condominio.application.usecases.comment.FindAllComents;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
@@ -14,11 +16,14 @@ import com.dunnas.chamados_condominio.application.usecases.user.FindUserById;
 import com.dunnas.chamados_condominio.domain.entity.*;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRequest;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +43,11 @@ public class CallViewController {
     private final FindUnitsByUserId findUnitsByUserId;
     private final CallDTOMapper callDTOMapper;
     private final CreateCall createCall;
+    private final FindAllComents findAllComents;
+    private final CreateComment createComment;
+    private final CommentDTOMapper commentDTOMapper;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindAllComents findAllComents, CreateComment createComment, CommentDTOMapper commentDTOMapper) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
@@ -52,6 +60,9 @@ public class CallViewController {
         this.findUnitsByUserId = findUnitsByUserId;
         this.callDTOMapper = callDTOMapper;
         this.createCall = createCall;
+        this.findAllComents = findAllComents;
+        this.createComment = createComment;
+        this.commentDTOMapper = commentDTOMapper;
     }
 
     @GetMapping("/new")
@@ -91,6 +102,7 @@ public class CallViewController {
         Unit unit = findUnitById.findUnitById(call.getUnitId());
         Block block = findBlockById.findBlockById(unit.getBlockId());
         CallType callType = findCallTypeById.findCallTypeById(call.getCallTypeId());
+        List<Comment> comments = findAllComents.findAllComments();
 
         model.addAttribute("call", call);
         model.addAttribute("status", status);
@@ -98,6 +110,7 @@ public class CallViewController {
         model.addAttribute("unit", unit);
         model.addAttribute("block", block);
         model.addAttribute("callType", callType);
+        model.addAttribute("comments", comments);
         return "call/call-detail";
     }
 
@@ -111,6 +124,24 @@ public class CallViewController {
         createCall.createCall(call, files, loggedUserEmail);
 
         return "redirect:/calls";
+    }
+
+    @PostMapping("{callId}/comments")
+    public String createComment(@PathVariable("callId") Long callId,
+                                @ModelAttribute CommentRequest request,
+                                RedirectAttributes redirectAttributes) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        try {
+            Comment comment = commentDTOMapper.toEntity(request);
+            createComment.createComment(comment, loggedUserEmail);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Comentário enviado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao enviar comentário.");
+        }
+
+        return "redirect:/calls/" + callId;
     }
 
 }
