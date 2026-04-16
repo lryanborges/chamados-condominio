@@ -48,7 +48,7 @@ public class UserRepositoryGateway implements UserGateway {
 
     @Override
     public List<User> findAllUsers() {
-        List<UserEntity> foundUsers = repository.findAll();
+        List<UserEntity> foundUsers = repository.findAllByOrderByIdAsc();
         return mapper.toDomainObjList(foundUsers);
     }
 
