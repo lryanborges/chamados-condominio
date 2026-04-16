@@ -32,7 +32,7 @@ public class CommentRepositoryGateway implements CommentGateway {
 
     @Override
     public List<Comment> findCommentsByCallId(Long callId) {
-        List<CommentEntity> commentEntities = repository.findAllByCallId(callId);
+        List<CommentEntity> commentEntities = repository.findAllByCallIdOrderByIdAsc(callId);
         return mapper.toDomainObjList(commentEntities);
     }
 }
