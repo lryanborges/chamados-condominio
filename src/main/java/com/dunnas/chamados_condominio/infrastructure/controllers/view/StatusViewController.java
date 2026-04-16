@@ -5,6 +5,7 @@ import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.domain.entity.Status;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.status.CreateStatusRequest;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.status.StatusDTOMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -255,3 +255,39 @@ input, select, textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid
     color: #1f2937;
     line-height: 1.5;
 }
+
+.error-container {
+    text-align: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 90%;
+}
+
+.icon-lock {
+    font-size: 4rem;
+    color: #991b1b; /* Vermelho que usamos no status-closed */
+    margin-bottom: 1rem;
+}
+
+.btn-back {
+    background-color: #4f46e5; /* Indigo que usamos no btn-save */
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.status-code {
+    display: block;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}

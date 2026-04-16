@@ -8,6 +8,7 @@ import com.dunnas.chamados_condominio.domain.entity.Block;
 import com.dunnas.chamados_condominio.domain.entity.Unit;
 import com.dunnas.chamados_condominio.domain.entity.User;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

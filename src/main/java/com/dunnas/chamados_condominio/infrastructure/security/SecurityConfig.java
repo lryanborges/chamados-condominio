@@ -30,9 +30,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/perform_login", "/login/**").permitAll()
+                        .requestMatchers("/login", "/perform_login", "/login/**", "/access-denied").permitAll()
                         .requestMatchers("/WEB-INF/views/**").permitAll()
                         .requestMatchers("/resources/**", "/static/**", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/calltypes/**", "/status/**", "/users/**", "/blocks/**", "/units/**").hasRole("ADMIN")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/calls/*/status").hasAnyRole("ADMIN", "COLLABORATOR")
+                        .requestMatchers("/calls/**", "/home/**").hasAnyRole("ADMIN", "COLLABORATOR", "RESIDENT")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -46,6 +49,11 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/access-denied");
+                        })
                 )
                 .csrf(csrf -> csrf.disable());
 
