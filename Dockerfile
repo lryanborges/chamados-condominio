@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=build app/target/*.war app.war
 
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.war"]
+ENTRYPOINT ["sh", "-c", "java -Xmx300m -Dserver.tomcat.additional-tld-skip-patterns=*.jar -Dserver.port=${PORT:-10000} -jar app.war"]
