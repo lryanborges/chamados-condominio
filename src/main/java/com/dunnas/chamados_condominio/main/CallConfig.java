@@ -50,7 +50,7 @@ public class CallConfig {
     }
 
     @Bean
-    CallDTOMapper callDTOMapper(UnitGateway unitGateway, CallTypeGateway callTypeGateway) {
-        return new CallDTOMapper(unitGateway, callTypeGateway);
+    CallDTOMapper callDTOMapper(UnitGateway unitGateway, CallTypeGateway callTypeGateway, StatusGateway statusGateway) {
+        return new CallDTOMapper(unitGateway, callTypeGateway, statusGateway);
     }
 }

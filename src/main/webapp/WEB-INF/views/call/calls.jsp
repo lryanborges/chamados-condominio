@@ -42,7 +42,7 @@
     <th>Local (Morador/Unid)</th>
     <th>Tipo de Chamado</th>
     <th>Status</th>
-    <th>Data</th>
+    <th>Data de Criação</th>
     <th>Deadline</th>
     <th>Ações</th>
   </tr>
@@ -61,7 +61,30 @@
           <td><strong>${call.title}</strong></td>
           <td>Morador ID ${call.user.name} - Ap. ${call.unit.identifier}</td>
           <td>${call.callType.title}</td>
-          <td>${call.status.name}</td>
+          <td>
+            <c:choose>
+              <c:when test="${loggedUser.role == 'COLLABORATOR' || loggedUser.role == 'ADMIN'}">
+                <form action="/calls/${call.id}/status" method="POST" style="display: flex; gap: 4px; align-items: center;">
+                  <select name="statusId" style="padding: 4px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.85rem;">
+                    <c:forEach var="st" items="${status}">
+                      <option value="${st.id}" ${st.id == call.status.id ? 'selected' : ''}>
+                          ${st.name}
+                      </option>
+                    </c:forEach>
+                  </select>
+                  <button type="submit" class="btn-save" style="padding: 4px 8px; font-size: 0.75rem;">
+                    Salvar
+                  </button>
+                </form>
+              </c:when>
+
+              <c:otherwise>
+                <span class="status-badge ${call.status.isFinal ? 'status-closed' : 'status-open'}">
+                    ${call.status.name}
+                </span>
+              </c:otherwise>
+            </c:choose>
+          </td>
           <td>${call.createdAt}</td>
           <td>${call.deadline}</td>
           <td>

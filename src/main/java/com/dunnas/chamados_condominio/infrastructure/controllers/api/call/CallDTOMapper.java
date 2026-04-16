@@ -1,18 +1,22 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.api.call;
 
 import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
+import com.dunnas.chamados_condominio.application.gateways.StatusGateway;
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.domain.entity.Call;
 import com.dunnas.chamados_condominio.domain.entity.CallType;
+import com.dunnas.chamados_condominio.domain.entity.Status;
 import com.dunnas.chamados_condominio.domain.entity.Unit;
 
 public class CallDTOMapper {
     private final UnitGateway unitGateway;
     private final CallTypeGateway callTypeGateway;
+    private final StatusGateway statusGateway;
 
-    public CallDTOMapper(UnitGateway unitGateway, CallTypeGateway callTypeGateway) {
+    public CallDTOMapper(UnitGateway unitGateway, CallTypeGateway callTypeGateway, StatusGateway statusGateway) {
         this.unitGateway = unitGateway;
         this.callTypeGateway = callTypeGateway;
+        this.statusGateway = statusGateway;
     }
 
     public CallResponse toResponse(Call call) {
@@ -26,6 +30,7 @@ public class CallDTOMapper {
     }
 
     public Call toEntityUpdate(UpdateCallRequest request){
-        return new Call(request.status());
+        Status status = statusGateway.findStatusById(request.statusId());
+        return new Call(status);
     }
 }

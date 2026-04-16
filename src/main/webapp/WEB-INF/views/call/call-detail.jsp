@@ -94,9 +94,6 @@
 
       <div style="margin-top: 2rem; display: flex; gap: 1rem;">
         <a href="/calls" class="btn-voltar">&larr; Voltar para a Lista</a>
-        <c:if test="${!call.status.isFinal}">
-          <a href="/calls/${call.id}/edit" class="btn" style="background-color: #f59e0b;">Editar Chamado</a>
-        </c:if>
       </div>
     </div>
   </div>
