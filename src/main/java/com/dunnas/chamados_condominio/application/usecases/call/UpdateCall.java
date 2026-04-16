@@ -10,6 +10,9 @@ import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.domain.entity.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class UpdateCall {
     private final CallGateway callGateway;
@@ -54,7 +57,8 @@ public class UpdateCall {
             }
 
             if (newStatus.getIsFinal()) {
-                foundCall.setFinishedAt(LocalDateTime.now());
+                LocalDateTime now = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().truncatedTo(ChronoUnit.MINUTES);
+                foundCall.setFinishedAt(now);
             }
 
             foundCall.setStatus(updatedCall.getStatus());
