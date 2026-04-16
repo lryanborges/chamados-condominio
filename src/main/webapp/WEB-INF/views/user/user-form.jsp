@@ -53,7 +53,7 @@
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-            <button type="submit" class="btn">Salvar Usuário</button>
+            <button type="submit" class="btn-save">Salvar Usuário</button>
             <a href="/users" class="btn-voltar" style="text-decoration: none; text-align: center;">Cancelar</a>
         </div>
 

@@ -28,13 +28,13 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
 
         <c:if test="${user.role == 'ADMIN'}">
-            <a href="/users" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <a href="/users" class="btn btn-save text-align: center; display: flex; align-items: center; justify-content: center;">
                 Gerenciar Usuários
             </a>
-            <a href="/blocks" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <a href="/blocks" class="btn btn-save text-align: center; display: flex; align-items: center; justify-content: center;">
                 Gerenciar Blocos
             </a>
-            <a href="/calls" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <a href="/calls" class="btn btn-save text-align: center; display: flex; align-items: center; justify-content: center;">
                 Gerenciar Chamados
             </a>
         </c:if>

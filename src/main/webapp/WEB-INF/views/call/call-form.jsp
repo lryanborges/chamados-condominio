@@ -53,7 +53,7 @@
     </div>
 
     <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-      <button type="submit" class="btn">Abrir Chamado</button>
+      <button type="submit" class="btn-save">Abrir Chamado</button>
       <a href="/calls" class="btn-voltar" style="text-decoration: none; text-align: center;">Cancelar</a>
     </div>
   </form>
