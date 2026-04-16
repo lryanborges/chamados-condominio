@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class CallTypeViewController {
 
     @GetMapping
     public String listCallTypes(Model model) {
-        System.out.println(">>> ENTROU NO METODO GET CALLTYPES <<<");
         List<CallType> calltypes = findAllCallTypes.findAllCallTypes();
 
         model.addAttribute("callTypes", calltypes);
@@ -39,9 +39,14 @@ public class CallTypeViewController {
     }
 
     @PostMapping
-    public String craateCallType(CreateCallTypeRequest request) {
-        CallType callType = callTypeDTOMapper.toEntity(request);
-        createCallType.createCallType(callType);
+    public String craateCallType(CreateCallTypeRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            CallType callType = callTypeDTOMapper.toEntity(request);
+            createCallType.createCallType(callType);
+            redirectAttributes.addFlashAttribute("successMessage", "Tipo de chamado criado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar tipo de chamado.");
+        }
 
         return "redirect:calltypes";
     }
