@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
+import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
 import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexesByCallId;
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
@@ -137,16 +138,19 @@ public class CallViewController {
 
     @PostMapping("{callId}/status")
     @PreAuthorize("hasAnyRole('ADMIN', 'COLLABORATOR')")
-    public String editStatus(@PathVariable("callId") Long callId, @ModelAttribute UpdateCallRequest request) {
+    public String editStatus(@PathVariable("callId") Long callId, @ModelAttribute UpdateCallRequest request,
+                             RedirectAttributes attributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
-
-        System.out.println("ID do Chamado: " + callId);
-        System.out.println("ID do Status no DTO: " + request.statusId());
-
         Call call = callDTOMapper.toEntityUpdate(request);
 
-        updateCall.updateCall(callId, call, loggedUserEmail);
+        try {
+            updateCall.updateCall(callId, call, loggedUserEmail);
+        } catch (BadRequestException e) {
+            attributes.addFlashAttribute("errorMessage", "Não é possível atualizar um status já finalizado.");
+        } catch (Exception e) {
+            attributes.addFlashAttribute("errorMessage", "Erro inesperado ao atualizar status.");
+        }
 
         return "redirect:/calls";
     }
