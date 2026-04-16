@@ -5,6 +5,7 @@ import com.dunnas.chamados_condominio.application.usecases.unit.CreateUnit;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByBlockId;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
+import com.dunnas.chamados_condominio.infrastructure.gateways.block.BlockEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitRepositoryGateway;
 import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserEntityMapper;
@@ -36,13 +37,13 @@ public class UnitConfig {
     }
 
     @Bean
-    UnitGateway unitGateway(UnitRepository repository, UnitEntityMapper mapper) {
-        return new UnitRepositoryGateway(repository, mapper);
+    UnitGateway unitGateway(UnitRepository repository, UnitEntityMapper mapper, BlockEntityMapper blockEntityMapper) {
+        return new UnitRepositoryGateway(repository, mapper, blockEntityMapper);
     }
 
     @Bean
-    UnitEntityMapper unitEntityMapper(UserEntityMapper userEntityMapper) {
-        return new UnitEntityMapper(userEntityMapper);
+    UnitEntityMapper unitEntityMapper(UserEntityMapper userEntityMapper, BlockEntityMapper blockEntityMapper) {
+        return new UnitEntityMapper(userEntityMapper, blockEntityMapper);
     }
 
 }

@@ -1,27 +1,19 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
 import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexesByCallId;
-import com.dunnas.chamados_condominio.application.usecases.block.FindBlockById;
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
-import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
-import com.dunnas.chamados_condominio.application.usecases.comment.FindAllComents;
 import com.dunnas.chamados_condominio.application.usecases.comment.FindCommentsByCallId;
-import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
-import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
 import com.dunnas.chamados_condominio.application.usecases.user.FindUserByEmail;
-import com.dunnas.chamados_condominio.application.usecases.user.FindUserById;
 import com.dunnas.chamados_condominio.domain.entity.*;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRequest;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentRequest;
-import jakarta.annotation.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -39,7 +29,6 @@ public class CallViewController {
     private final FindAllCallByFilters findAllCallByFilters;
     private final FindUserByEmail findUserByEmail;
     private final FindCallById findCallById;
-    private final FindBlockById findBlockById;
     private final FindAllCallTypes findAllCallTypes;
     private final FindUnitsByUserId findUnitsByUserId;
     private final CallDTOMapper callDTOMapper;
@@ -49,11 +38,10 @@ public class CallViewController {
     private final CommentDTOMapper commentDTOMapper;
     private final FindAnnexesByCallId findAnnexesByCallId;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindBlockById findBlockById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
-        this.findBlockById = findBlockById;
         this.findAllCallTypes = findAllCallTypes;
         this.findUnitsByUserId = findUnitsByUserId;
         this.callDTOMapper = callDTOMapper;
@@ -96,7 +84,7 @@ public class CallViewController {
     @GetMapping("/{id}")
     public String getCall(@PathVariable Long id, Model model) {
         Call call = findCallById.findCallById(id);
-        Block block = findBlockById.findBlockById(call.getUnit().getBlockId());
+        Block block = call.getUnit().getBlock();
         List<Comment> comments = findCommentsByCallId.findCommentsByCallId(call.getId());
         List<Annex> annexes = findAnnexesByCallId.findAnnexByCallId(call.getId());
 

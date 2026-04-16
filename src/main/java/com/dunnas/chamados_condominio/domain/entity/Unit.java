@@ -4,13 +4,13 @@ import java.util.List;
 
 public class Unit {
     private Long id;
-    private Long blockId;
+    private Block block;
     private int floor;
     String identifier;
     private List<User> users;
 
-    public Unit(Long blockId, int floor, String identifier) {
-        this.blockId = blockId;
+    public Unit(Block block, int floor, String identifier) {
+        this.block = block;
         this.floor = floor;
         this.identifier = identifier;
     }
@@ -21,14 +21,6 @@ public class Unit {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getBlockId() {
-        return blockId;
-    }
-
-    public void setBlockId(Long blockId) {
-        this.blockId = blockId;
     }
 
     public int getFloor() {
@@ -53,5 +45,13 @@ public class Unit {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
     }
 }

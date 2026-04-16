@@ -1,6 +1,7 @@
 package com.dunnas.chamados_condominio.application.usecases.block;
 
 import com.dunnas.chamados_condominio.application.gateways.BlockGateway;
+import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.usecases.unit.CreateUnit;
 import com.dunnas.chamados_condominio.domain.entity.Block;
 import com.dunnas.chamados_condominio.domain.entity.Unit;
@@ -8,11 +9,11 @@ import com.dunnas.chamados_condominio.domain.entity.Unit;
 public class CreateBlock {
 
     private final BlockGateway blockGateway;
-    private final CreateUnit createUnit;
+    private final UnitGateway unitGateway;
 
-    public CreateBlock(BlockGateway blockGateway, CreateUnit createUnit) {
+    public CreateBlock(BlockGateway blockGateway, UnitGateway unitGateway) {
         this.blockGateway = blockGateway;
-        this.createUnit = createUnit;
+        this.unitGateway = unitGateway;
     }
 
     public Block createBlock(Block newBlock){
@@ -23,7 +24,7 @@ public class CreateBlock {
         for(int i = 0; i < qtdFloors; i++){
             for(int j = 1; j <= nUnitsPerFloor; j++){
                 String identifier = i + String.format("%02d", j);
-                createUnit.createUnit(new Unit(createdBlock.getId(), i, identifier));
+                unitGateway.createUnit(new Unit(createdBlock, i, identifier));
             }
         }
         return createdBlock;
