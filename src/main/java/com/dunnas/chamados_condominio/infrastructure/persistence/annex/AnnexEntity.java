@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.infrastructure.persistence.annex;
 
+import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,14 +9,17 @@ public class AnnexEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long callId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "call_id", nullable = false)
+    private CallEntity call;
     private String fileName;
     private String filePath;
 
     public AnnexEntity() {}
 
-    public AnnexEntity(Long callId, String fileName, String filePath) {
-        this.callId = callId;
+    public AnnexEntity(CallEntity call, String fileName, String filePath) {
+        this.call = call;
         this.fileName = fileName;
         this.filePath = filePath;
     }
@@ -26,14 +30,6 @@ public class AnnexEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCallId() {
-        return callId;
-    }
-
-    public void setCallId(Long callId) {
-        this.callId = callId;
     }
 
     public String getFileName() {
@@ -50,5 +46,13 @@ public class AnnexEntity {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public CallEntity getCall() {
+        return call;
+    }
+
+    public void setCall(CallEntity call) {
+        this.call = call;
     }
 }

@@ -51,7 +51,7 @@ public class CreateCall {
                     .filter(file -> !file.isEmpty())
                     .forEach(file -> {
                         String filePath = fileStorageGateway.store(file);
-                        Annex annex = new Annex(createdCall.getId(), file.getOriginalFilename(), filePath);
+                        Annex annex = new Annex(createdCall, file.getOriginalFilename(), filePath);
                         annexGateway.createAnnex(annex);
                     });
         }

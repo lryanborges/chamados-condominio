@@ -1,17 +1,28 @@
 package com.dunnas.chamados_condominio.infrastructure.gateways.annex;
 
 import com.dunnas.chamados_condominio.domain.entity.Annex;
+import com.dunnas.chamados_condominio.domain.entity.Call;
+import com.dunnas.chamados_condominio.infrastructure.gateways.call.CallEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.persistence.annex.AnnexEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallEntity;
 
 import java.util.List;
 
 public class AnnexEntityMapper {
+    private final CallEntityMapper callEntityMapper;
+
+    public AnnexEntityMapper(CallEntityMapper callEntityMapper) {
+        this.callEntityMapper = callEntityMapper;
+    }
+
     public AnnexEntity toEntity(Annex annex) {
-        return new AnnexEntity(annex.getCallId(), annex.getFileName(), annex.getFilePath());
+        CallEntity callEntity = callEntityMapper.toEntity(annex.getCall());
+        return new AnnexEntity(callEntity, annex.getFileName(), annex.getFilePath());
     }
 
     public Annex toDomainObj(AnnexEntity annexEntity) {
-        return new Annex(annexEntity.getCallId(), annexEntity.getFileName(), annexEntity.getFilePath());
+        Call call = callEntityMapper.toDomainObj(annexEntity.getCall());
+        return new Annex(call, annexEntity.getFileName(), annexEntity.getFilePath());
     }
 
     public List<Annex> toDomainObjList(List<AnnexEntity> annexEntityList) {

@@ -2,12 +2,12 @@ package com.dunnas.chamados_condominio.domain.entity;
 
 public class Annex {
     private Long id;
-    private Long callId;
+    private Call call;
     private String fileName;
     private String filePath;
 
-    public Annex(Long callId, String fileName, String filePath) {
-        this.callId = callId;
+    public Annex(Call call, String fileName, String filePath) {
+        this.call = call;
         this.fileName = fileName;
         this.filePath = filePath;
     }
@@ -18,14 +18,6 @@ public class Annex {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCallId() {
-        return callId;
-    }
-
-    public void setCallId(Long callId) {
-        this.callId = callId;
     }
 
     public String getFileName() {
@@ -42,5 +34,13 @@ public class Annex {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public Call getCall() {
+        return call;
+    }
+
+    public void setCall(Call call) {
+        this.call = call;
     }
 }
