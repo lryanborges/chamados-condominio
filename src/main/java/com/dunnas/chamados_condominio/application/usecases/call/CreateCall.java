@@ -46,12 +46,15 @@ public class CreateCall {
 
         Call createdCall = callGateway.createCall(call);
 
-        annexes.stream().forEach(file -> {
-            String filePath = fileStorageGateway.store(file);
-
-            Annex annex = new Annex(createdCall.getId(), file.getOriginalFilename(), filePath);
-            annexGateway.createAnnex(annex);
-        });
+        if (annexes != null) {
+            annexes.stream()
+                    .filter(file -> !file.isEmpty())
+                    .forEach(file -> {
+                        String filePath = fileStorageGateway.store(file);
+                        Annex annex = new Annex(createdCall.getId(), file.getOriginalFilename(), filePath);
+                        annexGateway.createAnnex(annex);
+                    });
+        }
 
         return createdCall;
     }
