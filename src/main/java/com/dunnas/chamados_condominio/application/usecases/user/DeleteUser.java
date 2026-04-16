@@ -24,7 +24,7 @@ public class DeleteUser {
             throw new ForbiddenException("Only admins can delete users");
         }
         if(loggedUser.getId() == id) {
-            throw new ForbiddenException("You can't delete yourself");
+            throw new BadRequestException("You can't delete yourself");
         }
         userGateway.deleteUser(id);
     }
