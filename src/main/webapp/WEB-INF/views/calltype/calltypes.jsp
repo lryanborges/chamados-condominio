@@ -67,7 +67,7 @@
         Use ponto para decimais (ex: 1.5 para 1h30min).
       </small>
 
-      <button type="submit" class="btn" style="width: 100%;">Salvar Tipo</button>
+      <button type="submit" class="btn-save" style="width: 100%;">Salvar Tipo</button>
     </form>
   </div>
 

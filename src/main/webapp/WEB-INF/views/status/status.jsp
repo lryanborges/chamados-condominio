@@ -74,7 +74,7 @@
                 Marque se este status encerra o ciclo de vida do chamado.
             </small>
 
-            <button type="submit" class="btn" style="width: 100%;">Salvar Status</button>
+            <button type="submit" class="btn-save" style="width: 100%;">Salvar Status</button>
         </form>
     </div>
 
