@@ -1,5 +1,6 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
+import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -97,11 +99,19 @@ public class UserViewController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
 
-        deleteUser.deleteUser(id, loggedUserEmail);
+        try {
+            deleteUser.deleteUser(id, loggedUserEmail);
+            redirectAttributes.addFlashAttribute("successMessage", "Usuário removido com sucesso!");
+        } catch (BadRequestException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Você não pode deletar a si mesmo.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Ocorreu um erro inesperado ao excluir o usuário.");
+        }
+
 
         return "redirect:/users";
     }
