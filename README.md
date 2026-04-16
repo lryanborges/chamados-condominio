@@ -29,35 +29,52 @@ Essas entidades representam os elementos essenciais para o funcionamento do flux
 
 ---
 
-## 👥 Perfis de Usuário
+## 📜 Regras de Negócio
 
-O sistema possui três perfis de usuário:
+- Um usuário possui uma role: **ADMIN**, **COLLABORATOR** ou **RESIDENT**
+- Um usuário pode estar vinculado a uma ou mais unidades
+- Uma unidade pode ter um ou mais usuários vinculados
+- Um residente só pode visualizar chamados:
+  - criados por ele
+  - ou vinculados às suas unidades
+- Um colaborador só pode acessar chamados dentro do seu escopo
+- Um chamado sempre inicia com um status padrão (**Open**)
+- Usuários podem aplicar filtros de listagem aos chamados
+- Apenas **ADMIN** e **COLLABORATORS** no escopo podem alterar o status
+- Adminstradores podem vincular usuários a unidades
+- Chamados com status final:
+  - são encerrados automaticamente
+  - não podem mais ser modificados
+- Chamados podem ser feitos selecionando uma de suas unidades
+- Comentários respeitam regras de escopo e autoria
+- Unidades são geradas automaticamente a partir da criação de blocos
+
+---
+
+## 👥 Perfis de Usuário
 
 ### 🔹 Resident (Morador)
 
 * Pode visualizar apenas chamados:
-
-    * criados por ele
-    * ou relacionados à unidade em que reside
+  * criados por ele
+  * ou relacionados à unidade em que reside
 * Pode:
-
-    * Criar novos chamados
-    * Anexar arquivos aos chamados (opcional)
-    * Visualizar detalhes dos chamados
-    * Comentar em seus próprios chamados
+  * Criar novos chamados
+  * Anexar arquivos (opcional)
+  * Visualizar detalhes
+  * Comentar em seus próprios chamados
 
 ---
 
 ### 🔹 Collaborator (Colaborador)
 
 * Possui um **escopo de atuação** (ex: Elétrica, Hidráulica)
-* Pode visualizar apenas chamados relacionados ao seu escopo
+* Pode visualizar apenas chamados do seu escopo
 * Pode:
-
-    * Visualizar detalhes
-    * Comentar nos chamados do seu escopo
-    * Filtrar chamados por status
-    * Alterar status (dentro do seu escopo)
+  * Visualizar detalhes
+  * Comentar nos chamados
+  * Filtrar por status
+  * Alterar status
 
 ---
 
@@ -67,12 +84,12 @@ Possui controle total do sistema:
 
 * Gerenciamento de usuários (CRUD)
 * Gerenciamento de blocos e unidades
+* Vinculação de usuários às unidades
 * Criação de:
-
-    * Tipos de chamado
-    * Status
-* Visualização completa de todos os chamados
-* Pode comentar e alterar status de qualquer chamado
+  * Tipos de chamado
+  * Status
+* Visualização completa dos chamados
+* Pode comentar e alterar qualquer chamado
 
 ---
 
@@ -82,9 +99,7 @@ Administradores podem criar blocos informando:
 
 * Identificação (ex: A, B, Sul)
 * Quantidade de andares
-* Número de unidades por bloco
-
-A partir disso, o sistema gera automaticamente as unidades.
+* Número de unidades por andar
 
 ### 📐 Regra de geração de unidades
 
@@ -98,6 +113,8 @@ Resultado:
 * Térreo: 001, 002, 003...
 * 1º andar: 101, 102, 103...
 * 2º andar: 201, 202, 203...
+
+A geração é automática e segue um padrão consistente de identificação.
 
 ---
 
@@ -121,15 +138,14 @@ O chamado inicia com status padrão: **Open**
 
 * Definidos por administradores
 * Possuem:
-
-    * Título
-    * Deadline (SLA em horas)
+  * Título
+  * Deadline (SLA em horas)
 
 Exemplo:
 
 * SLA = 4.5 → 4h30min
 
-O sistema calcula automaticamente o prazo do chamado.
+O sistema calcula automaticamente o prazo do chamado com base no horário de criação.
 
 ---
 
@@ -150,10 +166,9 @@ Quando um chamado atinge um status final:
 
 * Funcionam como histórico de interações
 * Regras:
-
-    * Resident: apenas nos próprios chamados
-    * Collaborator: apenas no seu escopo
-    * Admin: em todos
+  * Resident: apenas nos próprios chamados
+  * Collaborator: apenas no seu escopo
+  * Admin: em todos
 
 ---
 
@@ -167,78 +182,73 @@ Implementado com **Spring Security**, baseado em roles:
 
 Regras principais:
 
-* Rotas protegidas por perfil
-* Redirecionamento para login quando não autenticado
-* Redirecionamento para página 403 quando sem permissão
+* Rotas protegidas por perfil no `SecurityConfig`
+* Restrições adicionais por escopo aplicadas na aplicação
+* Redirecionamentos:
+  * Não autenticado → login
+  * Sem permissão → página 403
 
 ---
 
 ## 🧠 Decisões Arquiteturais
 
-O sistema segue princípios de **Clean Architecture**, com separação clara de responsabilidades:
+O sistema segue princípios de **Clean Architecture**, garantindo separação de responsabilidades e facilidade de manutenção.
 
 ### 🔹 Camadas
 
 * **Domain**
-
-    * Entidades e regras de negócio
+  * Entidades e regras de negócio
 
 * **Application**
-
-    * Use cases
-    * Gateways (interfaces)
-    * Exceções de negócio
+  * Use cases
+  * Gateways (interfaces)
+  * Exceções de negócio
 
 * **Infrastructure**
-
-    * Controllers (View e API)
-    * Implementações de repositório
-    * Mapeamentos (Entity ↔ Domain)
-    * Segurança (Spring Security)
-    * Persistência (JPA)
+  * Controllers (View e API)
+  * Implementações de repositório
+  * Mapeamentos (Entity ↔ Domain)
+  * Segurança (Spring Security)
+  * Persistência (JPA)
 
 * **Main**
-
-    * Configuração de beans
-    * Integração com Spring
+  * Configuração de beans
+  * Inicialização da aplicação
 
 ---
 
 ### 🔹 Interface
 
-* Utilização de **JSP (Java Server Pages)** para renderização
-* Views localizadas em:
-
-```plaintext
-/WEB-INF/views
-```
+* Utilização de **JSP (Java Server Pages)**
+* Responsável pela renderização das telas
 
 ---
 
-### 🔹 API e Controllers
+### 🔹 Controllers
 
-* Controllers divididos em:
-
-    * **View Controllers** → páginas JSP
-    * **API Controllers** → prefixo `/api`
+* Separação entre:
+  * **View Controllers** → renderizam páginas JSP
+  * **API Controllers** → endpoints REST (`/api`)
 
 ---
 
 ### 🔹 Persistência
 
-* Banco relacional (**PostgreSQL**)
-* Controle de versão com **Flyway**
-* Migrations responsáveis por:
+* Banco de dados: **PostgreSQL**
+* Acesso via JPA (Hibernate)
+* Versionamento com **Flyway**
 
-    * Criação das tabelas
-    * Alterações de tabela durante o desenvovimento
-    * Inserção de dados iniciais
+As migrations são responsáveis por:
+
+* Criação das tabelas
+* Evolução do schema
+* Inserção de dados iniciais
 
 ---
 
 ### 🔹 Usuário Inicial
 
-Criado via migration:
+Criado automaticamente via migration:
 
 * Email: `ryan@gmail.com`
 * Senha: `ryan123`
@@ -249,16 +259,15 @@ Criado via migration:
 ## 🗄️ Diagrama do Banco de Dados
 
 <p align="center">
-  <img src="assets/diagrama-entidade-relacionamento.png" alt="Diagrama do Banco" width="700"/>
+  <img src="assets/diagrama-entidade-relacionamento.png" width="700"/>
 </p>
-
 
 ---
 
 ## 🏗️ Arquitetura do Sistema
 
 <p align="center">
-  <img src="assets/arquitetura-sistema.png" alt="Diagrama do Banco" width="700"/>
+  <img src="assets/arquitetura-sistema.png" width="700"/>
 </p>
 
 ---
@@ -278,38 +287,45 @@ Criado via migration:
 docker compose up
 ```
 
----
-
 ### 🔹 Acesso
-
-```plaintext
+```bash
 http://localhost:8080
 ```
+
 
 ---
 
 ### 🔹 Fluxo de Acesso
 
-* Usuário não autenticado → redirecionado para login
-* Usuário sem permissão → página 403
+- Usuário não autenticado → redirecionado para login
+- Usuário sem permissão → página 403
+
+---
+
+## ⭐ Diferenciais
+
+- Arquitetura baseada em **Clean Architecture**
+- Separação entre API e View Controllers
+- Controle de acesso por **role + escopo**
+- Execução simplificada com `docker compose up`
 
 ---
 
 ## ⚠️ Observações Importantes
 
-* Migrations são imutáveis após execução
-* Controle de acesso é centralizado
-* Sistema considera cenários reais de uso em condomínio
+- Migrations são imutáveis após execução
+- Controle de acesso centralizado no Spring Security
+- Sistema projetado com base em cenários reais de uso
 
 ---
 
 ## 📌 Considerações Finais
 
-O sistema foi projetado com foco em:
+O sistema foi desenvolvido com foco em:
 
-* Organização
-* Segurança
-* Escalabilidade
-* Aproximação com cenários reais
+- Organização
+- Segurança
+- Escalabilidade
+- Clareza na separação de responsabilidades
 
-As decisões arquiteturais visam facilitar manutenção, testes e evolução futura da aplicação.
+As decisões arquiteturais adotadas permitem fácil manutenção, evolução e adaptação do sistema a novos requisitos.
