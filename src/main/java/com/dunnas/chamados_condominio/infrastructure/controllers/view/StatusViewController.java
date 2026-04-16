@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -38,9 +39,14 @@ public class StatusViewController {
     }
 
     @PostMapping
-    public String createStatus(@ModelAttribute CreateStatusRequest request) {
-        Status status = statusDTOMapper.toEntity(request);
-        createStatus.createStatus(status);
+    public String createStatus(@ModelAttribute CreateStatusRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            Status status = statusDTOMapper.toEntity(request);
+            createStatus.createStatus(status);
+            redirectAttributes.addFlashAttribute("successMessage", "Status criado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar status.");
+        }
 
         return "redirect:/status";
     }
