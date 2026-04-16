@@ -1,6 +1,11 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
+import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
+import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
+import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
+import com.dunnas.chamados_condominio.domain.entity.CallType;
+import com.dunnas.chamados_condominio.domain.entity.Status;
 import com.dunnas.chamados_condominio.domain.entity.User;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.user.UserDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.user.UserRequest;
@@ -20,27 +25,36 @@ public class UserViewController {
     private final UpdateUser updateUser;
     private final DeleteUser deleteUser;
     private final UserDTOMapper userDTOMapper;
+    private final FindAllCallTypes findAllCallTypes;
+    private final FindCallTypeById findCallTypeById;
 
-    public UserViewController(CreateUser createUser, FindAllUsers findAllUsers, FindUserByEmail findUserByEmail, UpdateUser updateUser, DeleteUser deleteUser, UserDTOMapper userDTOMapper) {
+    public UserViewController(CreateUser createUser, FindAllUsers findAllUsers, FindUserByEmail findUserByEmail, UpdateUser updateUser, DeleteUser deleteUser, UserDTOMapper userDTOMapper, FindAllCallTypes findAllCallTypes, FindCallTypeById findCallTypeById) {
         this.createUser = createUser;
         this.findAllUsers = findAllUsers;
         this.findUserByEmail = findUserByEmail;
         this.updateUser = updateUser;
         this.deleteUser = deleteUser;
         this.userDTOMapper = userDTOMapper;
+        this.findAllCallTypes = findAllCallTypes;
+        this.findCallTypeById = findCallTypeById;
     }
 
     @GetMapping("/new")
-    public String formCreateUser() {
+    public String formCreateUser(Model model) {
+        List<CallType> calltypes = findAllCallTypes.findAllCallTypes();
+        model.addAttribute("callTypes", calltypes);
+
         return "user/user-form";
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserRequest request) {
+    public String createUser(@ModelAttribute UserRequest request, @RequestParam("callTypeId") Long callTypeId) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
+        CallType callType = findCallTypeById.findCallTypeById(callTypeId);
 
         User user = userDTOMapper.toEntity(request);
+        user.setScope(callType.getTitle());
         createUser.createUser(user, loggedUserEmail);
 
         return "redirect:/users";
