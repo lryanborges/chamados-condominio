@@ -7,4 +7,5 @@ import java.util.List;
 public interface CommentGateway {
     Comment createComment(Comment comment);
     List<Comment> findAllComments();
+    List<Comment> findCommentsByCallId(Long callId);
 }
