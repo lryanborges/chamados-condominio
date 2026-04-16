@@ -24,7 +24,7 @@ public class CallEntityMapper {
         this.callTypeEntityMapper = callTypeEntityMapper;
     }
 
-    CallEntity toEntity(Call call) {
+    public CallEntity toEntity(Call call) {
         UserEntity userEntity = userEntityMapper.toEntity(call.getUser());
         UnitEntity unitEntity = unitEntityMapper.toEntity(call.getUnit());
         StatusEntity statusEntity = statusEntityMapper.toEntity(call.getStatus());
@@ -37,7 +37,7 @@ public class CallEntityMapper {
         return callEntity;
     }
 
-    Call toDomainObj(CallEntity callEntity) {
+    public Call toDomainObj(CallEntity callEntity) {
         User user = userEntityMapper.toDomainObj(callEntity.getUser());
         Unit unit = unitEntityMapper.toDomainObj(callEntity.getUnit());
         Status status = statusEntityMapper.toDomainObj(callEntity.getStatus());

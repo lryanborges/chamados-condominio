@@ -1,5 +1,7 @@
 package com.dunnas.chamados_condominio.infrastructure.persistence.comment;
 
+import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallEntity;
+import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,15 +13,21 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String content;
-    private Long callId;
-    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "call_id", nullable = false)
+    private CallEntity call;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
     private LocalDateTime createdAt;
 
     public CommentEntity() {}
 
-    public CommentEntity(String content, Long callId) {
+    public CommentEntity(String content, CallEntity call) {
         this.content = content;
-        this.callId = callId;
+        this.call = call;
     }
 
     public Long getId() {
@@ -38,27 +46,27 @@ public class CommentEntity {
         this.content = content;
     }
 
-    public Long getCallId() {
-        return callId;
-    }
-
-    public void setCallId(Long callId) {
-        this.callId = callId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public CallEntity getCall() {
+        return call;
+    }
+
+    public void setCall(CallEntity call) {
+        this.call = call;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

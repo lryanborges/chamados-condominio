@@ -13,12 +13,10 @@ import java.time.LocalDateTime;
 
 public class CreateComment {
     private final CommentGateway commentGateway;
-    private final CallGateway callGateway;
     private final UserGateway userGateway;
 
-    public CreateComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway) {
+    public CreateComment(CommentGateway commentGateway, UserGateway userGateway) {
         this.commentGateway = commentGateway;
-        this.callGateway = callGateway;
         this.userGateway = userGateway;
     }
 
@@ -26,25 +24,23 @@ public class CreateComment {
         if (comment == null) {
             throw new BadRequestException("Comment must not be null");
         }
-        if (comment.getCallId() == null) {
+        if (comment.getCall().getId() == null) {
             throw new BadRequestException("Call id must not be null");
         }
 
-
-        Call call = callGateway.findCallById(comment.getCallId());
         User loggedUser = userGateway.findUserByEmail(loggedUserEmail);
 
-        if (call == null) {
+        if (comment.getCall() == null) {
             throw new NotFoundException("Call not found");
         }
         if (loggedUser == null) {
             throw new NotFoundException("User not found");
         }
 
-        CallType calltype = call.getCallType();
+        CallType calltype = comment.getCall().getCallType();
 
         if (loggedUser.getRole() == Role.RESIDENT) {
-            boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnit().getId());
+            boolean belongsToUnit = loggedUser.getUnitIds().contains(comment.getCall().getUnit().getId());
             if (!belongsToUnit) {
                 throw new ForbiddenException("Residents can only comment in their own units");
             }
@@ -58,7 +54,7 @@ public class CreateComment {
         }
 
         comment.setCreatedAt(LocalDateTime.now());
-        comment.setUserId(loggedUser.getId());
+        comment.setUser(loggedUser);
         return commentGateway.createComment(comment);
     }
 }
