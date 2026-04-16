@@ -5,6 +5,7 @@ import com.dunnas.chamados_condominio.application.gateways.CallTypeGateway;
 import com.dunnas.chamados_condominio.application.gateways.CommentGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
+import com.dunnas.chamados_condominio.application.usecases.comment.FindAllComents;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.comment.CommentEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.comment.CommentRepositoryGateway;
@@ -17,6 +18,11 @@ public class CommentConfig {
     @Bean
     CreateComment createComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
         return new CreateComment(commentGateway, callGateway, userGateway, callTypeGateway);
+    }
+
+    @Bean
+    FindAllComents findAllComents(CommentGateway commentGateway) {
+        return new FindAllComents(commentGateway);
     }
 
     @Bean
