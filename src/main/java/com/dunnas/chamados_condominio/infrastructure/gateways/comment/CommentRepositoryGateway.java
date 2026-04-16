@@ -29,4 +29,10 @@ public class CommentRepositoryGateway implements CommentGateway {
         List<CommentEntity> commentEntities = repository.findAll();
         return mapper.toDomainObjList(commentEntities);
     }
+
+    @Override
+    public List<Comment> findCommentsByCallId(Long callId) {
+        List<CommentEntity> commentEntities = repository.findAllByCallId(callId);
+        return mapper.toDomainObjList(commentEntities);
+    }
 }
