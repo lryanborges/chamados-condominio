@@ -65,7 +65,7 @@
   <tr>
     <th>ID</th>
     <th>Título</th>
-    <th>Local (Morador/Unid)</th>
+    <th>Local (Bloco/Unid)</th>
     <th>Tipo de Chamado</th>
     <th>Status</th>
     <th>Data de Criação</th>
@@ -86,7 +86,7 @@
         <tr>
           <td>#${call.id}</td>
           <td><strong>${call.title}</strong></td>
-          <td>Morador ID ${call.user.name} - Ap. ${call.unit.identifier}</td>
+          <td>${call.unit.block.identity} - Ap. ${call.unit.identifier}</td>
           <td>${call.callType.title}</td>
           <td>
             <c:choose>

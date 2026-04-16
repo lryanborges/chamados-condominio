@@ -40,7 +40,7 @@
         </c:if>
 
         <c:if test="${user.role == 'RESIDENT' || user.role == 'COLLABORATOR'}">
-            <a href="/calls" class="btn" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
+            <a href="/calls" class="btn btn-save" style="text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center;">
                 Meus Chamados
             </a>
         </c:if>
