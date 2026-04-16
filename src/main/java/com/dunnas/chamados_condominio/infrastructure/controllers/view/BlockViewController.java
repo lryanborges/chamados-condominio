@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("blocks")
@@ -37,9 +38,15 @@ public class BlockViewController {
     }
 
     @PostMapping
-    public String createBlock(@ModelAttribute CreateBlockRequest request) {
-        Block block = blockDTOMapper.toEntity(request);
-        createBlock.createBlock(block);
+    public String createBlock(@ModelAttribute CreateBlockRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            Block block = blockDTOMapper.toEntity(request);
+            createBlock.createBlock(block);
+            redirectAttributes.addFlashAttribute("successMessage", "Bloco criado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar bloco.");
+        }
+
         return "redirect:/blocks";
     }
 }

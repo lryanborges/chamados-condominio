@@ -31,7 +31,7 @@
 </head>
 <body>
 <div class="header">
-    <h2>Unidades do Bloco: ${block.identity}</h2>
+    <h2>Unidades do Bloco ${block.identity}</h2>
 </div>
 
 <c:if test="${not empty errorMessage}">
