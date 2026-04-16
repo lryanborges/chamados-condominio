@@ -7,6 +7,6 @@ FROM eclipse-temurin:25-jdk
 
 WORKDIR /app
 
-COPY --from=build /target/*.war app.war
+COPY --from=build app/target/*.war app.war
 
 ENTRYPOINT ["java", "-jar", "app.war"]
