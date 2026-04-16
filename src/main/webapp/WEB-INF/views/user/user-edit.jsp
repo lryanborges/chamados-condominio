@@ -49,7 +49,7 @@
         </div>
 
         <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-            <button type="submit" class="btn">Atualizar Dados</button>
+            <button type="submit" class="btn btn-save">Atualizar Dados</button>
             <a href="/users" class="btn-voltar" style="text-decoration: none; text-align: center;">Cancelar</a>
         </div>
 

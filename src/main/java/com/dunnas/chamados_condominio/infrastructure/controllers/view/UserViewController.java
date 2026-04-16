@@ -49,14 +49,20 @@ public class UserViewController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserRequest request, @RequestParam("callTypeId") Long callTypeId) {
+    public String createUser(@ModelAttribute UserRequest request, @RequestParam("callTypeId") Long callTypeId, RedirectAttributes redirectAttributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
-        CallType callType = findCallTypeById.findCallTypeById(callTypeId);
 
-        User user = userDTOMapper.toEntity(request);
-        user.setScope(callType.getTitle());
-        createUser.createUser(user, loggedUserEmail);
+        try {
+            CallType callType = findCallTypeById.findCallTypeById(callTypeId);
+            User user = userDTOMapper.toEntity(request);
+            user.setScope(callType.getTitle());
+            createUser.createUser(user, loggedUserEmail);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Usuário criado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar usuário.");
+        }
 
         return "redirect:/users";
     }
@@ -87,13 +93,17 @@ public class UserViewController {
     }
 
     @PostMapping("/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute UserRequest request, Model model) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute UserRequest request, Model model, RedirectAttributes redirectAttributes) {
 
         String loggedUserEmail = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User user = userDTOMapper.toEntity(request);
-
-        updateUser.updateUser(id, user, loggedUserEmail);
+        try {
+            User user = userDTOMapper.toEntity(request);
+            updateUser.updateUser(id, user, loggedUserEmail);
+            redirectAttributes.addFlashAttribute("successMessage", "Usuário atualizado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao atualizar usuário.");
+        }
 
         return "redirect:/users";
     }
