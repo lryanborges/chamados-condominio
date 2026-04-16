@@ -108,12 +108,18 @@ public class CallViewController {
 
     @PostMapping
     public String createCall(@ModelAttribute CallRequest request,
-                             @RequestParam(value = "annexes", required = false) List<MultipartFile> files) {
+                             @RequestParam(value = "annexes", required = false) List<MultipartFile> files,
+                             RedirectAttributes redirectAttributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
 
-        Call call = callDTOMapper.toEntity(request);
-        createCall.createCall(call, files, loggedUserEmail);
+        try {
+            Call call = callDTOMapper.toEntity(request);
+            createCall.createCall(call, files, loggedUserEmail);
+            redirectAttributes.addFlashAttribute("successMessage", "Chamado criado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Erro ao criar chamado.");
+        }
 
         return "redirect:/calls";
     }
@@ -142,9 +148,9 @@ public class CallViewController {
                              RedirectAttributes attributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
-        Call call = callDTOMapper.toEntityUpdate(request);
 
         try {
+            Call call = callDTOMapper.toEntityUpdate(request);
             updateCall.updateCall(callId, call, loggedUserEmail);
         } catch (BadRequestException e) {
             attributes.addFlashAttribute("errorMessage", "Não é possível atualizar um status já finalizado.");
