@@ -73,15 +73,15 @@
         <div class="description-box">${call.description}</div>
       </div>
 
-      <div class="attachments-section">
+      <div class="annexes-section">
         <h3 style="font-size: 1.1rem; color: #374151;">Anexos</h3>
         <c:choose>
-          <c:when test="${empty attachments}">
+          <c:when test="${empty annexes}">
             <p style="color: #94a3b8; font-style: italic; font-size: 0.9rem;">Nenhum arquivo anexado.</p>
           </c:when>
           <c:otherwise>
-            <c:forEach var="file" items="${attachments}">
-              <div class="attachment-item">
+            <c:forEach var="file" items="${annexes}">
+              <div class="annex-item">
                 <span style="margin-right: 8px;">📎</span>
                 <a href="/files/download/${file.id}" target="_blank" style="color: #2563eb; text-decoration: none;">
                     ${file.fileName}

@@ -183,14 +183,13 @@ input, select, textarea { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid
     white-space: pre-wrap;
 }
 
-/* Seção de Anexos */
-.attachments-section {
+.annexes-section {
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 2px solid #f3f4f6;
 }
 
-.attachment-item {
+.annex-item {
     display: flex;
     align-items: center;
     padding: 0.6rem;

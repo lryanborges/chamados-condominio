@@ -5,6 +5,8 @@ import com.dunnas.chamados_condominio.domain.entity.Annex;
 import com.dunnas.chamados_condominio.infrastructure.persistence.annex.AnnexEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.annex.AnnexRepository;
 
+import java.util.List;
+
 public class AnnexRepositoryGateway implements AnnexGateway {
 
     private final AnnexRepository repository;
@@ -20,5 +22,11 @@ public class AnnexRepositoryGateway implements AnnexGateway {
         AnnexEntity annexEntity = mapper.toEntity(annex);
         AnnexEntity savedAnnex = repository.save(annexEntity);
         return mapper.toDomainObj(savedAnnex);
+    }
+
+    @Override
+    public List<Annex> findAnnexesByCallId(Long callId) {
+        List<AnnexEntity> annexEntities = repository.findAllByCallId(callId);
+        return mapper.toDomainObjList(annexEntities);
     }
 }
