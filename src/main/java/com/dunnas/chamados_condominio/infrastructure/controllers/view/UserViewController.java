@@ -49,14 +49,24 @@ public class UserViewController {
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute UserRequest request, @RequestParam("callTypeId") Long callTypeId, RedirectAttributes redirectAttributes) {
+    public String createUser(@ModelAttribute UserRequest request, @RequestParam(value = "callTypeId", required = false) Long callTypeId, RedirectAttributes redirectAttributes) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();
 
         try {
-            CallType callType = findCallTypeById.findCallTypeById(callTypeId);
+            CallType callType = null;
+            if(callTypeId != null) {
+                callType = findCallTypeById.findCallTypeById(callTypeId);
+
+            }
             User user = userDTOMapper.toEntity(request);
-            user.setScope(callType.getTitle());
+
+            if(callType != null) {
+                user.setScope(callType.getTitle());
+            } else {
+                user.setScope("");
+            }
+
             createUser.createUser(user, loggedUserEmail);
 
             redirectAttributes.addFlashAttribute("successMessage", "Usuário criado com sucesso!");
