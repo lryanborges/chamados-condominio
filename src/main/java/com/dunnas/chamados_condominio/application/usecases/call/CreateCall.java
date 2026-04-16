@@ -6,6 +6,9 @@ import com.dunnas.chamados_condominio.domain.entity.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class CreateCall {
@@ -32,10 +35,10 @@ public class CreateCall {
         }
 
         CallType callType = call.getCallType();
-        LocalDateTime createdAt = LocalDateTime.now();
+        LocalDateTime createdAt = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime().truncatedTo(ChronoUnit.MINUTES);
         Long hours = callType.getDeadline().longValue();
         Long minutes = Math.round((callType.getDeadline() % 1) * 60);
-        LocalDateTime deadline = LocalDateTime.now().plusHours(hours).plusMinutes(minutes);
+        LocalDateTime deadline = createdAt.plusHours(hours).plusMinutes(minutes);
 
         call.setUser(loggedUser);
         Status defaultStatus = new Status("Open", false);
