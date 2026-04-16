@@ -4,14 +4,17 @@ import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexesByCa
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
 import com.dunnas.chamados_condominio.application.usecases.call.FindCallById;
+import com.dunnas.chamados_condominio.application.usecases.call.UpdateCall;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
 import com.dunnas.chamados_condominio.application.usecases.comment.FindCommentsByCallId;
+import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
 import com.dunnas.chamados_condominio.application.usecases.user.FindUserByEmail;
 import com.dunnas.chamados_condominio.domain.entity.*;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRequest;
+import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.UpdateCallRequest;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,8 +40,10 @@ public class CallViewController {
     private final CreateComment createComment;
     private final CommentDTOMapper commentDTOMapper;
     private final FindAnnexesByCallId findAnnexesByCallId;
+    private final FindAllStatus findAllStatus;
+    private final UpdateCall updateCall;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId, FindAllStatus findAllStatus, UpdateCall updateCall) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
@@ -50,6 +55,8 @@ public class CallViewController {
         this.createComment = createComment;
         this.commentDTOMapper = commentDTOMapper;
         this.findAnnexesByCallId = findAnnexesByCallId;
+        this.findAllStatus = findAllStatus;
+        this.updateCall = updateCall;
     }
 
     @GetMapping("/new")
@@ -74,9 +81,11 @@ public class CallViewController {
                 .getAuthentication().getName();
         User loggedUser = findUserByEmail.findUserByEmail(loggedUserEmail);
         List<Call> calls = findAllCallByFilters.findAllCallByFilters(loggedUserEmail, statusId);
+        List<Status> status = findAllStatus.findAllStatus();
 
         model.addAttribute("calls", calls);
         model.addAttribute("loggedUser", loggedUser);
+        model.addAttribute("status", status);
 
         return "call/calls";
     }
@@ -123,6 +132,21 @@ public class CallViewController {
         }
 
         return "redirect:/calls/" + callId;
+    }
+
+    @PostMapping("{callId}/status")
+    public String editStatus(@PathVariable("callId") Long callId, @ModelAttribute UpdateCallRequest request) {
+        String loggedUserEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        System.out.println("ID do Chamado: " + callId);
+        System.out.println("ID do Status no DTO: " + request.statusId());
+
+        Call call = callDTOMapper.toEntityUpdate(request);
+
+        updateCall.updateCall(callId, call, loggedUserEmail);
+
+        return "redirect:/calls";
     }
 
 }
