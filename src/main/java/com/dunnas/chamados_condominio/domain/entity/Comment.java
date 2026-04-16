@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 public class Comment {
     private Long id;
     private String content;
-    private Long callId;
-    private Long userId;
+    private Call call;
+    private User user;
     private LocalDateTime createdAt;
 
-    public Comment(String content, Long callId) {
+    public Comment(String content, Call call) {
         this.content = content;
-        this.callId = callId;
+        this.call = call;
     }
 
     public Long getId() {
@@ -30,27 +30,27 @@ public class Comment {
         this.content = content;
     }
 
-    public Long getCallId() {
-        return callId;
-    }
-
-    public void setCallId(Long callId) {
-        this.callId = callId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Call getCall() {
+        return call;
+    }
+
+    public void setCall(Call call) {
+        this.call = call;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

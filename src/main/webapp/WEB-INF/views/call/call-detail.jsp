@@ -109,7 +109,7 @@
         <c:forEach var="comment" items="${comments}">
           <div class="comment-card">
             <div class="comment-meta">
-              <span>Usuário #${comment.userId}</span>
+              <span>${comment.user.name}<span> #${comment.user.role}</span></span>
               <span style="font-weight: normal; color: #9ca3af;">${comment.createdAt}</span>
             </div>
             <div class="comment-content">
