@@ -6,6 +6,7 @@ import com.dunnas.chamados_condominio.domain.entity.CallType;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.calltype.CallTypeDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.calltype.CreateCallTypeRequest;
 import com.dunnas.chamados_condominio.infrastructure.persistence.calltype.CallTypeEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

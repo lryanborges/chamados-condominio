@@ -17,6 +17,7 @@ import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRe
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.UpdateCallRequest;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -135,6 +136,7 @@ public class CallViewController {
     }
 
     @PostMapping("{callId}/status")
+    @PreAuthorize("hasAnyRole('ADMIN', 'COLLABORATOR')")
     public String editStatus(@PathVariable("callId") Long callId, @ModelAttribute UpdateCallRequest request) {
         String loggedUserEmail = SecurityContextHolder.getContext()
                 .getAuthentication().getName();

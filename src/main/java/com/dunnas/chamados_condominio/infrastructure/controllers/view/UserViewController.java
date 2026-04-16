@@ -2,13 +2,12 @@ package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
-import com.dunnas.chamados_condominio.application.usecases.status.FindAllStatus;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
 import com.dunnas.chamados_condominio.domain.entity.CallType;
-import com.dunnas.chamados_condominio.domain.entity.Status;
 import com.dunnas.chamados_condominio.domain.entity.User;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.user.UserDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.user.UserRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

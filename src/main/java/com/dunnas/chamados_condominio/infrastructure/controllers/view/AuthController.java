@@ -15,4 +15,11 @@ public class AuthController {
         return "login";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDeniedPage(Model model) {
+        model.addAttribute("errorTitle", "Acesso Restrito");
+        model.addAttribute("errorMessage", "Sua conta não possui as permissões necessárias para acessar este conteúdo.");
+        return "error/403";
+    }
+
 }

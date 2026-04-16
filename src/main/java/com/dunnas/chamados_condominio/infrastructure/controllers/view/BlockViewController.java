@@ -5,6 +5,7 @@ import com.dunnas.chamados_condominio.application.usecases.block.FindAllBlocks;
 import com.dunnas.chamados_condominio.domain.entity.Block;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.block.BlockDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.block.CreateBlockRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
