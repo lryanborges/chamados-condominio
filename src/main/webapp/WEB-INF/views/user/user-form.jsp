@@ -43,9 +43,9 @@
         </div>
 
         <div class="form-group">
-            <label for="callType">Escopo</label>
-            <select id="callType" name="callTypeId" required class="form-control">
-                <option value="" disabled selected>Selecione o escopo...</option>
+            <label for="callType">Escopo (Opcional)</label>
+            <select id="callType" name="callTypeId" class="form-control">
+                <option value="">Nenhum escopo selecionado</option>
                 <c:forEach var="type" items="${callTypes}">
                     <option value="${type.id}">${type.title}</option>
                 </c:forEach>
