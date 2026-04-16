@@ -42,9 +42,9 @@ O sistema possui três perfis de usuário:
 * Pode:
 
     * Criar novos chamados
-    * Anexar arquivos (opcional)
-    * Comentar em seus próprios chamados
+    * Anexar arquivos aos chamados (opcional)
     * Visualizar detalhes dos chamados
+    * Comentar em seus próprios chamados
 
 ---
 
@@ -72,7 +72,7 @@ Possui controle total do sistema:
     * Tipos de chamado
     * Status
 * Visualização completa de todos os chamados
-* Pode comentar e alterar qualquer chamado
+* Pode comentar e alterar status de qualquer chamado
 
 ---
 
@@ -226,11 +226,12 @@ O sistema segue princípios de **Clean Architecture**, com separação clara de 
 
 ### 🔹 Persistência
 
-* Banco relacional
+* Banco relacional (**PostgreSQL**)
 * Controle de versão com **Flyway**
 * Migrations responsáveis por:
 
     * Criação das tabelas
+    * Alterações de tabela durante o desenvovimento
     * Inserção de dados iniciais
 
 ---
@@ -247,13 +248,18 @@ Criado via migration:
 
 ## 🗄️ Diagrama do Banco de Dados
 
-*(Inserir imagem aqui)*
+<p align="center">
+  <img src="assets/diagrama-entidade-relacionamento.png" alt="Diagrama do Banco" width="700"/>
+</p>
+
 
 ---
 
 ## 🏗️ Arquitetura do Sistema
 
-*(Inserir diagrama aqui)*
+<p align="center">
+  <img src="assets/arquitetura-sistema.png" alt="Diagrama do Banco" width="700"/>
+</p>
 
 ---
 
