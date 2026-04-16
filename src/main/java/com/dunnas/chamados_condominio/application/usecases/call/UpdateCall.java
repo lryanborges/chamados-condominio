@@ -13,15 +13,11 @@ import java.time.LocalDateTime;
 
 public class UpdateCall {
     private final CallGateway callGateway;
-    private final StatusGateway statusGateway;
     private final UserGateway userGateway;
-    private final CallTypeGateway callTypeGateway;
 
-    public UpdateCall(CallGateway callGateway, StatusGateway statusGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+    public UpdateCall(CallGateway callGateway, UserGateway userGateway) {
         this.callGateway = callGateway;
-        this.statusGateway = statusGateway;
         this.userGateway = userGateway;
-        this.callTypeGateway = callTypeGateway;
     }
 
     public Call updateCall(Long id, Call updatedCall, String loggedUserEmail) {
@@ -39,24 +35,19 @@ public class UpdateCall {
 
         if (loggedUser.getRole() == Role.COLLABORATOR) {
 
-            CallType callType = callTypeGateway.findCallTypeById(foundCall.getCallTypeId());
-
-            if (callType == null) {
-                throw new NotFoundException("CallType not found");
-            }
+            CallType callType = foundCall.getCallType();
 
             if (!callType.getTitle().equalsIgnoreCase(loggedUser.getScope())) {
                 throw new ForbiddenException("Collaborator outside scope");
             }
         }
 
-        Status currentStatus = statusGateway.findStatusById(foundCall.getStatusId());
-        if (currentStatus.getIsFinal()) {
+        if (foundCall.getStatus().getIsFinal()) {
             throw new BadRequestException("Call already finished and cannot be updated");
         }
 
-        if (updatedCall.getStatusId() != null && !updatedCall.getStatusId().equals(foundCall.getStatusId())) {
-            Status newStatus = statusGateway.findStatusById(updatedCall.getStatusId());
+        if (updatedCall.getStatus() != null && !updatedCall.getStatus().getId().equals(foundCall.getStatus().getId())) {
+            Status newStatus = updatedCall.getStatus();
 
             if (newStatus == null) {
                 throw new NotFoundException("Status not found");
@@ -66,7 +57,7 @@ public class UpdateCall {
                 foundCall.setFinishedAt(LocalDateTime.now());
             }
 
-            foundCall.setStatusId(updatedCall.getStatusId());
+            foundCall.setStatus(updatedCall.getStatus());
         }
 
         return callGateway.updateCall(foundCall);

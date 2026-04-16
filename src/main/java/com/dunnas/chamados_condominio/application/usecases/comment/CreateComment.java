@@ -15,13 +15,11 @@ public class CreateComment {
     private final CommentGateway commentGateway;
     private final CallGateway callGateway;
     private final UserGateway userGateway;
-    private final CallTypeGateway callTypeGateway;
 
-    public CreateComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
+    public CreateComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway) {
         this.commentGateway = commentGateway;
         this.callGateway = callGateway;
         this.userGateway = userGateway;
-        this.callTypeGateway = callTypeGateway;
     }
 
     public Comment createComment(Comment comment, String loggedUserEmail) {
@@ -43,10 +41,10 @@ public class CreateComment {
             throw new NotFoundException("User not found");
         }
 
-        CallType calltype = callTypeGateway.findCallTypeById(call.getCallTypeId());
+        CallType calltype = call.getCallType();
 
         if (loggedUser.getRole() == Role.RESIDENT) {
-            boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnitId());
+            boolean belongsToUnit = loggedUser.getUnitIds().contains(call.getUnit().getId());
             if (!belongsToUnit) {
                 throw new ForbiddenException("Residents can only comment in their own units");
             }

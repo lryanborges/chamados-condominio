@@ -9,6 +9,7 @@ import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallT
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
 import com.dunnas.chamados_condominio.application.usecases.comment.CreateComment;
 import com.dunnas.chamados_condominio.application.usecases.comment.FindAllComents;
+import com.dunnas.chamados_condominio.application.usecases.comment.FindCommentsByCallId;
 import com.dunnas.chamados_condominio.application.usecases.status.FindStatusById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitById;
 import com.dunnas.chamados_condominio.application.usecases.unit.FindUnitsByUserId;
@@ -38,34 +39,26 @@ public class CallViewController {
     private final FindAllCallByFilters findAllCallByFilters;
     private final FindUserByEmail findUserByEmail;
     private final FindCallById findCallById;
-    private final FindStatusById findStatusById;
-    private final FindUserById findUserById;
-    private final FindUnitById findUnitById;
     private final FindBlockById findBlockById;
-    private final FindCallTypeById findCallTypeById;
     private final FindAllCallTypes findAllCallTypes;
     private final FindUnitsByUserId findUnitsByUserId;
     private final CallDTOMapper callDTOMapper;
     private final CreateCall createCall;
-    private final FindAllComents findAllComents;
+    private final FindCommentsByCallId findCommentsByCallId;
     private final CreateComment createComment;
     private final CommentDTOMapper commentDTOMapper;
     private final FindAnnexesByCallId findAnnexesByCallId;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindStatusById findStatusById, FindUserById findUserById, FindUnitById findUnitById, FindBlockById findBlockById, FindCallTypeById findCallTypeById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindAllComents findAllComents, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindBlockById findBlockById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
-        this.findStatusById = findStatusById;
-        this.findUserById = findUserById;
-        this.findUnitById = findUnitById;
         this.findBlockById = findBlockById;
-        this.findCallTypeById = findCallTypeById;
         this.findAllCallTypes = findAllCallTypes;
         this.findUnitsByUserId = findUnitsByUserId;
         this.callDTOMapper = callDTOMapper;
         this.createCall = createCall;
-        this.findAllComents = findAllComents;
+        this.findCommentsByCallId = findCommentsByCallId;
         this.createComment = createComment;
         this.commentDTOMapper = commentDTOMapper;
         this.findAnnexesByCallId = findAnnexesByCallId;
@@ -103,20 +96,12 @@ public class CallViewController {
     @GetMapping("/{id}")
     public String getCall(@PathVariable Long id, Model model) {
         Call call = findCallById.findCallById(id);
-        Status status = findStatusById.findStatusById(call.getStatusId());
-        User user = findUserById.findUserById(call.getUserId());
-        Unit unit = findUnitById.findUnitById(call.getUnitId());
-        Block block = findBlockById.findBlockById(unit.getBlockId());
-        CallType callType = findCallTypeById.findCallTypeById(call.getCallTypeId());
-        List<Comment> comments = findAllComents.findAllComments();
+        Block block = findBlockById.findBlockById(call.getUnit().getBlockId());
+        List<Comment> comments = findCommentsByCallId.findCommentsByCallId(call.getId());
         List<Annex> annexes = findAnnexesByCallId.findAnnexByCallId(call.getId());
 
         model.addAttribute("call", call);
-        model.addAttribute("status", status);
-        model.addAttribute("user", user);
-        model.addAttribute("unit", unit);
         model.addAttribute("block", block);
-        model.addAttribute("callType", callType);
         model.addAttribute("comments", comments);
         model.addAttribute("annexes", annexes);
         return "call/call-detail";

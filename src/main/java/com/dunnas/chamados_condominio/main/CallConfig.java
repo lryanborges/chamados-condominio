@@ -8,6 +8,10 @@ import com.dunnas.chamados_condominio.application.usecases.call.UpdateCall;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.call.CallEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.call.CallRepositoryGateway;
+import com.dunnas.chamados_condominio.infrastructure.gateways.calltype.CallTypeEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.status.StatusEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.unit.UnitEntityMapper;
+import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserEntityMapper;
 import com.dunnas.chamados_condominio.infrastructure.persistence.call.CallRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +20,8 @@ import org.springframework.context.annotation.Configuration;
 public class CallConfig {
 
     @Bean
-    CreateCall createCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
-        return new CreateCall(callGateway, annexGateway, fileStorageGateway, userGateway, callTypeGateway);
+    CreateCall createCall(CallGateway callGateway, AnnexGateway annexGateway, FileStorageGateway fileStorageGateway, UserGateway userGateway) {
+        return new CreateCall(callGateway, annexGateway, fileStorageGateway, userGateway);
     }
 
     @Bean
@@ -31,8 +35,8 @@ public class CallConfig {
     }
 
     @Bean
-    UpdateCall updateCall(CallGateway callGateway, StatusGateway statusGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
-        return new UpdateCall(callGateway, statusGateway, userGateway, callTypeGateway);
+    UpdateCall updateCall(CallGateway callGateway, UserGateway userGateway) {
+        return new UpdateCall(callGateway, userGateway);
     }
 
     @Bean
@@ -41,12 +45,12 @@ public class CallConfig {
     }
 
     @Bean
-    CallEntityMapper callEntityMapper() {
-        return new CallEntityMapper();
+    CallEntityMapper callEntityMapper(UnitEntityMapper unitEntityMapper, UserEntityMapper userEntityMapper, StatusEntityMapper statusEntityMapper, CallTypeEntityMapper callTypeEntityMapper) {
+        return new CallEntityMapper(unitEntityMapper, userEntityMapper, statusEntityMapper, callTypeEntityMapper);
     }
 
     @Bean
-    CallDTOMapper callDTOMapper() {
-        return new CallDTOMapper();
+    CallDTOMapper callDTOMapper(UnitGateway unitGateway, CallTypeGateway callTypeGateway) {
+        return new CallDTOMapper(unitGateway, callTypeGateway);
     }
 }

@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CommentConfig {
     @Bean
-    CreateComment createComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway, CallTypeGateway callTypeGateway) {
-        return new CreateComment(commentGateway, callGateway, userGateway, callTypeGateway);
+    CreateComment createComment(CommentGateway commentGateway, CallGateway callGateway, UserGateway userGateway) {
+        return new CreateComment(commentGateway, callGateway, userGateway);
     }
 
     @Bean
