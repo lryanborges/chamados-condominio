@@ -1,1 +1,1 @@
-INSERT INTO status (id, name, is_final) VALUES (1, 'Open', false);
+INSERT INTO status (name, is_final) VALUES ('Open', false);
