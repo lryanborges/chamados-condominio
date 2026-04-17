@@ -54,9 +54,16 @@ public class UserRepositoryGateway implements UserGateway {
 
     @Override
     public User updateUser(User user) {
-        UserEntity userEntity = mapper.toEntity(user);
-        UserEntity savedUser = repository.save(userEntity);
-        return mapper.toDomainObj(savedUser);
+        UserEntity existing = repository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getName() != null) existing.setName(user.getName());
+        if (user.getEmail() != null) existing.setEmail(user.getEmail());
+        if (user.getPassword() != null) existing.setPassword(user.getPassword());
+        if (user.getRole() != null) existing.setRole(user.getRole());
+        if (user.getScope() != null) existing.setScope(user.getScope());
+
+        return mapper.toDomainObj(repository.save(existing));
     }
 
     @Override
