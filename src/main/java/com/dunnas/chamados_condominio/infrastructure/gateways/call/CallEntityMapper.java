@@ -38,7 +38,12 @@ public class CallEntityMapper {
     }
 
     public Call toDomainObj(CallEntity callEntity) {
-        User user = userEntityMapper.toDomainObj(callEntity.getUser());
+        User user = null;
+        if(callEntity.getUser() != null) {
+            user = userEntityMapper.toDomainObj(callEntity.getUser());
+        } else {
+            user = new User("Usuário Removido", "0@unexist.com", "", Role.RESIDENT, "");
+        }
         Unit unit = unitEntityMapper.toDomainObj(callEntity.getUnit());
         Status status = statusEntityMapper.toDomainObj(callEntity.getStatus());
         CallType callType = callTypeEntityMapper.toDomainObj(callEntity.getCallType());

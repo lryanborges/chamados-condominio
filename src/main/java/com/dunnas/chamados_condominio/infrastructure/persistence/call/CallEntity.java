@@ -6,6 +6,8 @@ import com.dunnas.chamados_condominio.infrastructure.persistence.status.StatusEn
 import com.dunnas.chamados_condominio.infrastructure.persistence.unit.UnitEntity;
 import com.dunnas.chamados_condominio.infrastructure.persistence.user.UserEntity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,7 @@ public class CallEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
