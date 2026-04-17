@@ -17,12 +17,16 @@ public class AnnexEntityMapper {
 
     public AnnexEntity toEntity(Annex annex) {
         CallEntity callEntity = callEntityMapper.toEntity(annex.getCall());
-        return new AnnexEntity(callEntity, annex.getFileName(), annex.getFilePath());
+        AnnexEntity annexEntity = new AnnexEntity(callEntity, annex.getFileName(), annex.getFilePath());
+        annexEntity.setId(annex.getId());
+        return annexEntity;
     }
 
     public Annex toDomainObj(AnnexEntity annexEntity) {
         Call call = callEntityMapper.toDomainObj(annexEntity.getCall());
-        return new Annex(call, annexEntity.getFileName(), annexEntity.getFilePath());
+        Annex annex = new Annex(call, annexEntity.getFileName(), annexEntity.getFilePath());
+        annex.setId(annexEntity.getId());
+        return annex;
     }
 
     public List<Annex> toDomainObjList(List<AnnexEntity> annexEntityList) {

@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.AnnexGateway;
 import com.dunnas.chamados_condominio.application.gateways.CallGateway;
+import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexById;
 import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexesByCallId;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.annex.AnnexDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallDTOMapper;
@@ -22,6 +23,11 @@ public class AnnexConfig {
     @Bean
     FindAnnexesByCallId findAnnexesByCallId(AnnexGateway annexGateway) {
         return new FindAnnexesByCallId(annexGateway);
+    }
+
+    @Bean
+    FindAnnexById findAnnexById(AnnexGateway annexGateway) {
+        return new FindAnnexById(annexGateway);
     }
 
     @Bean
