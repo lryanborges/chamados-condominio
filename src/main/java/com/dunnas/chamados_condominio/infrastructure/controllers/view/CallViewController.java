@@ -1,6 +1,7 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
 import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
+import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexById;
 import com.dunnas.chamados_condominio.application.usecases.annex.FindAnnexesByCallId;
 import com.dunnas.chamados_condominio.application.usecases.call.CreateCall;
 import com.dunnas.chamados_condominio.application.usecases.call.FindAllCallByFilters;
@@ -18,6 +19,11 @@ import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.CallRe
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.call.UpdateCallRequest;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.comment.CommentRequest;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 @Controller
@@ -44,8 +52,9 @@ public class CallViewController {
     private final FindAnnexesByCallId findAnnexesByCallId;
     private final FindAllStatus findAllStatus;
     private final UpdateCall updateCall;
+    private final FindAnnexById findAnnexById;
 
-    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId, FindAllStatus findAllStatus, UpdateCall updateCall) {
+    public CallViewController(FindAllCallByFilters findAllCallByFilters, FindUserByEmail findUserByEmail, FindCallById findCallById, FindAllCallTypes findAllCallTypes, FindUnitsByUserId findUnitsByUserId, CallDTOMapper callDTOMapper, CreateCall createCall, FindCommentsByCallId findCommentsByCallId, CreateComment createComment, CommentDTOMapper commentDTOMapper, FindAnnexesByCallId findAnnexesByCallId, FindAllStatus findAllStatus, UpdateCall updateCall, FindAnnexById findAnnexById) {
         this.findAllCallByFilters = findAllCallByFilters;
         this.findUserByEmail = findUserByEmail;
         this.findCallById = findCallById;
@@ -59,6 +68,7 @@ public class CallViewController {
         this.findAnnexesByCallId = findAnnexesByCallId;
         this.findAllStatus = findAllStatus;
         this.updateCall = updateCall;
+        this.findAnnexById = findAnnexById;
     }
 
     @GetMapping("/new")
@@ -159,6 +169,35 @@ public class CallViewController {
         }
 
         return "redirect:/calls";
+    }
+
+    @GetMapping("/download/{annexId}")
+    public ResponseEntity<Resource> download(@PathVariable Long annexId) {
+        Annex annex = findAnnexById.findAnnexById(annexId);
+
+        try {
+            File file = new File(annex.getFilePath());
+            Resource resource = new FileSystemResource(file);
+
+            if (!resource.exists() || !resource.isReadable()) {
+                System.err.println("Arquivo não encontrado no caminho: " + annex.getFilePath());
+                return ResponseEntity.notFound().build();
+            }
+
+            String contentType = Files.probeContentType(file.toPath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + annex.getFileName() + "\"")
+                    .body(resource);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }

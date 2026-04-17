@@ -83,7 +83,7 @@
             <c:forEach var="file" items="${annexes}">
               <div class="annex-item">
                 <span style="margin-right: 8px;">📎</span>
-                <a href="/download/${file.id}" target="_blank" style="color: #2563eb; text-decoration: none;">
+                <a href="/calls/download/${file.id}" target="_blank" style="color: #2563eb; text-decoration: none;">
                     ${file.fileName}
                 </a>
               </div>

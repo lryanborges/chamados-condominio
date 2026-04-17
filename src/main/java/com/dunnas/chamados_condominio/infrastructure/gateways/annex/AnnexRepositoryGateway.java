@@ -29,4 +29,11 @@ public class AnnexRepositoryGateway implements AnnexGateway {
         List<AnnexEntity> annexEntities = repository.findAllByCallId(callId);
         return mapper.toDomainObjList(annexEntities);
     }
+
+    @Override
+    public Annex findAnnexById(Long id) {
+        AnnexEntity annexEntity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Annex not found"));
+        return mapper.toDomainObj(annexEntity);
+    }
 }
