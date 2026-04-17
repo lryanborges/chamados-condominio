@@ -2,6 +2,7 @@ package com.dunnas.chamados_condominio.main;
 
 import com.dunnas.chamados_condominio.application.gateways.UnitGateway;
 import com.dunnas.chamados_condominio.application.gateways.UserGateway;
+import com.dunnas.chamados_condominio.application.usecases.ValidatePassword;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
 import com.dunnas.chamados_condominio.infrastructure.controllers.api.user.UserDTOMapper;
 import com.dunnas.chamados_condominio.infrastructure.gateways.user.UserEntityMapper;
@@ -63,5 +64,10 @@ public class UserConfig {
     @Bean
     UserDTOMapper userDTOMapper() {
         return new UserDTOMapper();
+    }
+
+    @Bean
+    ValidatePassword validatePassword() {
+        return new ValidatePassword();
     }
 }

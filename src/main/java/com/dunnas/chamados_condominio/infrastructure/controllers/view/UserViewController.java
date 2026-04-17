@@ -1,6 +1,7 @@
 package com.dunnas.chamados_condominio.infrastructure.controllers.view;
 
 import com.dunnas.chamados_condominio.application.exceptions.BadRequestException;
+import com.dunnas.chamados_condominio.application.usecases.ValidatePassword;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindAllCallTypes;
 import com.dunnas.chamados_condominio.application.usecases.calltype.FindCallTypeById;
 import com.dunnas.chamados_condominio.application.usecases.user.*;
@@ -28,8 +29,9 @@ public class UserViewController {
     private final UserDTOMapper userDTOMapper;
     private final FindAllCallTypes findAllCallTypes;
     private final FindCallTypeById findCallTypeById;
+    private final ValidatePassword validatePassword;
 
-    public UserViewController(CreateUser createUser, FindAllUsers findAllUsers, FindUserByEmail findUserByEmail, UpdateUser updateUser, DeleteUser deleteUser, UserDTOMapper userDTOMapper, FindAllCallTypes findAllCallTypes, FindCallTypeById findCallTypeById) {
+    public UserViewController(CreateUser createUser, FindAllUsers findAllUsers, FindUserByEmail findUserByEmail, UpdateUser updateUser, DeleteUser deleteUser, UserDTOMapper userDTOMapper, FindAllCallTypes findAllCallTypes, FindCallTypeById findCallTypeById, ValidatePassword validatePassword) {
         this.createUser = createUser;
         this.findAllUsers = findAllUsers;
         this.findUserByEmail = findUserByEmail;
@@ -38,6 +40,7 @@ public class UserViewController {
         this.userDTOMapper = userDTOMapper;
         this.findAllCallTypes = findAllCallTypes;
         this.findCallTypeById = findCallTypeById;
+        this.validatePassword = validatePassword;
     }
 
     @GetMapping("/new")
@@ -54,6 +57,12 @@ public class UserViewController {
                 .getAuthentication().getName();
 
         try {
+            boolean samePassword = validatePassword.validatePassword(request.password(), request.confirmPassword());
+            if (!samePassword) {
+                redirectAttributes.addFlashAttribute("errorMessage", "As senhas não coincidem!");
+                return "redirect:/users/new";
+            }
+
             CallType callType = null;
             if(callTypeId != null) {
                 callType = findCallTypeById.findCallTypeById(callTypeId);
