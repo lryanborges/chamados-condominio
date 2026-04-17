@@ -7,6 +7,16 @@
     <meta charset="UTF-8">
     <title>Criar Usuário</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+        .error-alert {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #fecaca;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,6 +25,13 @@
 </div>
 
 <div class="form-container">
+
+    <c:if test="${not empty errorMessage}">
+        <div class="error-alert">
+                ${errorMessage}
+        </div>
+    </c:if>
+
     <form action="/users" method="POST">
 
         <div class="form-group">
@@ -30,6 +47,11 @@
         <div class="form-group">
             <label for="password">Senha</label>
             <input type="password" id="password" name="password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirmar Senha</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required />
         </div>
 
         <div class="form-group">
@@ -59,6 +81,19 @@
 
     </form>
 </div>
+
+<script>
+    const form = document.querySelector('form');
+    const password = document.getElementById('password');
+    const confirm = document.getElementById('confirmPassword');
+
+    form.addEventListener('submit', (e) => {
+        if (password.value !== confirm.value) {
+            e.preventDefault();
+            alert("As senhas não coincidem!");
+        }
+    });
+</script>
 
 </body>
 </html>
